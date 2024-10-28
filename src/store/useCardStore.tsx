@@ -1,10 +1,14 @@
 import { defineStore } from "pinia";
+import Map from "ol/Map";
+import { v4 as uuidv4 } from "uuid";
 import {
   TYPES,
   INIT_LINE_STATE,
   INIT_PLOYGON_STATE,
   INIT_CIRCLE_STATE,
+  DRAW_TYPES,
 } from "../const/const.map";
+import { PointTool } from "../components/map/MapTools";
 
 export const defaultState = {
   type: "",
@@ -13,9 +17,37 @@ export const defaultState = {
 };
 export const useCardStore = defineStore("cardStore", {
   state: () => {
-    return { list: [], showUuid: "", active: "" };
+    return {
+      list: [],
+      showUuid: "",
+      active: "",
+      drawTool: {},
+      drawToolType: "",
+    };
   },
   actions: {
+    setMapDrawTool({ drawType, map }: { drawType: string; map: Map }) {
+      this.drawToolType = drawType;
+      let uuid = uuidv4().replace(/-/g, "");
+      let tool: PointTool;
+      let p = { map, uuid };
+      switch (drawType) {
+        case DRAW_TYPES.POINT:
+          tool = new PointTool(p);
+          console.log("🚀 ~ setMapDrawTool ~ tool:", tool);
+          break;
+      }
+
+      this.drawTool = tool;
+
+      const cb = (q) => {
+        console.log("🚀 ~ cb ~ q:", q);
+      };
+
+      tool.insertCb(cb);
+
+      return { tool, drawType };
+    },
     setActive(type: string) {
       this.active = type;
     },

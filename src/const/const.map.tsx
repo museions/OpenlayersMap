@@ -1,5 +1,6 @@
 // 基本类型
-export const TYPES = {
+
+export const DRAW_TYPES = {
   POINT: "Point",
   LINESTRING: "LineString",
   POLYGON: "Polygon",
@@ -7,6 +8,10 @@ export const TYPES = {
   RECT: "Rect",
   MEASUREDISTANCE: "MEASUREDISTANCE",
   MEASUREPOLYGON: "MEASUREPOLYGON",
+};
+
+export const TYPES = {
+  ...DRAW_TYPES,
   PATHPLAN: "PATHPLAN",
   TOPICTYPES: "TOPICTYPES",
 };

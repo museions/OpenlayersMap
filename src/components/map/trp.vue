@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, toRaw } from "vue";
 import { storeToRefs } from "pinia";
 import {
   useMapStore,
@@ -7,10 +7,9 @@ import {
   useTopicLayerStore,
   usePanelStore,
 } from "../../store";
-import { EventBus } from "../../util/index";
-import { TYPES, TOPICTYPES, PANEL_TYPES } from "../../const";
+import { TYPES, TOPICTYPES, PANEL_TYPES, DRAW_TYPES } from "../../const";
 
-const { mapTool: MapTool } = storeToRefs(useMapStore());
+const { map } = storeToRefs(useMapStore());
 
 const cardStore = useCardStore();
 
@@ -18,19 +17,9 @@ const { active } = storeToRefs(cardStore);
 
 const panelStore = usePanelStore();
 
-const currentColor = ref("#262626");
-
 const topicLayerStore = useTopicLayerStore();
 
-const handleCompleteCallback = ({ operate, type, uuid, ...rest }) => {
-  if (operate == "add") {
-    cardStore.addData({ type, uuid, ...rest });
-  } else {
-    cardStore.setShowUuid(uuid);
-  }
-};
 const handleClickOpIcon = (type) => {
-  console.log("🚀 ~ handleClickOpIcon ~ type:", type);
   active.value = type;
   //路径规划
   if (type == TYPES.PATHPLAN) {
@@ -42,6 +31,11 @@ const handleClickOpIcon = (type) => {
   if (type == TYPES.TOPICTYPES) {
     topicLayerStore.setVisible(true);
     return;
+  }
+
+  //画图
+  if (Object.values(DRAW_TYPES).includes(type)) {
+    cardStore.setMapDrawTool({ drawType:type, map: toRaw(map.value) });
   }
 };
 
@@ -79,7 +73,7 @@ const List = [
           <svg
             width="1em"
             height="1em"
-            :fill="currentColor"
+            fill="#262626"
             aria-hidden="true"
             focusable="false"
             class=""

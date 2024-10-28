@@ -13,7 +13,8 @@ const cardstore = useCardStore();
 
 const { setShowUuid, getItem, removeItem } = cardstore;
 
-const { showUuid } = storeToRefs(cardstore);
+const { showUuid, drawType } = storeToRefs(cardstore);
+console.log("🚀 ~ drawType:", drawType);
 
 const MapStore = useMapStore();
 
@@ -24,6 +25,11 @@ cardstore.$onAction(({ name, store, after }) => {
     after((p) => {
       form.value = { ...form.value, ...p, ...p.formData };
       console.log("🚀 ~ after ~ form.value:", form.value);
+    });
+  }
+  if (name == "setMapDrawTool") {
+    after((p) => {
+      console.log("🚀 ~ after ~ p:", p);
     });
   }
 });
@@ -65,7 +71,7 @@ const formComponent = computed(() => {
 </script>
 
 <template>
-  <div class="card_panel" v-if="!!showUuid" :key="showUuid">
+  <div class="card_panel" v-if="!!drawType" :key="showUuid">
     <div class="card_header">
       <span>{{ CARD_TITLE[form.type] }}</span>
       <span
@@ -82,8 +88,9 @@ const formComponent = computed(() => {
           focusable="false"
           class=""
         >
-          <use xlink:href="#icon-close"></use></svg
-      ></span>
+          <use xlink:href="#icon-close"></use>
+        </svg>
+      </span>
     </div>
     <div class="card_body">
       <div class="container">
