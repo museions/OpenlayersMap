@@ -4,20 +4,30 @@ import Cloud from "ol-ext/particule/Cloud";
 import Snow from "ol-ext/particule/Snow";
 import RainDrop from "ol-ext/particule/RainDrop";
 import Rain from "ol-ext/particule/Rain";
-import { MapTools } from "./index";
+import { LAYER_NAMES } from "../../../../baseComponent/OpenlayersMap/layers";
 
 export class WeatherTools {
-  mapTool: MapTools;
   map: Map;
   cloud: AnimatedCanvas;
-  constructor({ mapTool }: { mapTool: MapTools }) {
-    this.mapTool = mapTool;
-    this.map = mapTool.map;
+  AMAP_LAYER;
+  GOOGLE_LAYER;
+  constructor({ map }: { map: Map }) {
+    this.map = map;
     this.initWeatherMap();
   }
   initWeatherMap() {
-    this.mapTool.layers.AMAP_LAYER.setVisible(false);
-    this.mapTool.layers.GOOGLE_LAYER.setVisible(true);
+    this.AMAP_LAYER = this.map
+      .getLayers()
+      .getArray()
+      .find((i) => i.getClassName() == LAYER_NAMES.AMAP_LAYER);
+
+    this.GOOGLE_LAYER = this.map
+      .getLayers()
+      .getArray()
+      .find((i) => i.getClassName() == LAYER_NAMES.GOOGLE_LAYER);
+
+    this.AMAP_LAYER.setVisible(false);
+    this.GOOGLE_LAYER.setVisible(true);
 
     // cloud
     this.cloud = new AnimatedCanvas({
@@ -60,7 +70,7 @@ export class WeatherTools {
   }
   remove() {
     this.map.removeOverlay(this.cloud);
-    this.mapTool.layers.AMAP_LAYER.setVisible(true);
-    this.mapTool.layers.GOOGLE_LAYER.setVisible(false);
+    this.AMAP_LAYER.setVisible(true);
+    this.GOOGLE_LAYER.setVisible(false);
   }
 }

@@ -8,3 +8,6 @@ export const ZOOM = { MAX: 22, MIN: 0, INIT: 5 };
 
 // 中心点
 export const CENTER = [114.3005, 30.5928];
+
+//水印文字
+export const WATER_TEXT = "Openlayers";

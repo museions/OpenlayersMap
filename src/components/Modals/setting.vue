@@ -1,5 +1,5 @@
 <script setup>
-import { onBeforeUnmount, ref, reactive, onMounted } from "vue";
+import { onBeforeUnmount, ref, reactive, onMounted, toRaw } from "vue";
 import { storeToRefs } from "pinia";
 import { ElMessage } from "element-plus";
 import { SCALEPLATE_LIST } from "../../const/const.map";
@@ -10,16 +10,16 @@ import { useModalStore, useMapStore } from "../../store";
 
 const mapStore = useMapStore();
 
-const { mapTool } = storeToRefs(mapStore);
+const { map } = storeToRefs(mapStore);
 const modalStore = useModalStore();
 
 const scaleValue = ref(SCALEPLATE_LIST[0].t);
 
 const selectScaleUnit = (unit) => {
   const v = SCALEPLATE_LIST.filter(({ t, v }) => unit == t)[0].v;
-  const map = mapTool.value.map;
+  const mapInstance = toRaw(map.value);
 
-  const scaleControl = map
+  const scaleControl = mapInstance
     .getControls()
     .getArray()
     .find((control) => control instanceof ScaleLine);

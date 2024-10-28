@@ -1,16 +1,13 @@
 import Map from "ol/Map";
 import { Style, Circle, Fill } from "ol/style";
 import * as DayNight from "ol-ext/source/DayNight";
-import { Vector as VectorLayer, Image as ImageLayer } from "ol/layer";
-import { MapTools } from "./index";
+import { Vector as VectorLayer } from "ol/layer";
 
 export class TimeTools {
-  mapTool: MapTools;
   map: Map;
   vecLayer!: VectorLayer;
-  constructor({ mapTool }: { mapTool: MapTools }) {
-    this.mapTool = mapTool;
-    this.map = mapTool.map;
+  constructor({ map }: { map: Map }) {
+    this.map = map;
     this.initHeatMap();
   }
   initHeatMap() {

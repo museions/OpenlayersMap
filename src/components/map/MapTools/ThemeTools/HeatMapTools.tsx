@@ -5,19 +5,17 @@ import { Point } from "ol/geom";
 import { Style, Text, Stroke } from "ol/style";
 import { Vector as VectorSource } from "ol/source";
 import { Vector as VectorLayer, Image as ImageLayer } from "ol/layer";
-import { MapTools } from "./index";
+import { toRaw } from "vue";
 
 export class HeatMapTools {
-  mapTool: MapTools;
   map: Map;
   markers: Array<Feature> = [];
   markersLimitNum: number = 1000;
   idwSource: IDW;
   idwLayer!: ImageLayer;
   vecLayer!: VectorLayer;
-  constructor({ mapTool }: { mapTool: MapTools; markersLimitNum: number }) {
-    this.mapTool = mapTool;
-    this.map = mapTool.map;
+  constructor({ map }: { map: Map; markersLimitNum: number }) {
+    this.map = toRaw(map);
     this.initHeatMap();
   }
   initHeatMap() {
@@ -47,7 +45,7 @@ export class HeatMapTools {
     this.map.addLayer(this.vecLayer);
   }
 
-  addFeatures() {
+  create() {
     const size = this.markersLimitNum || 100;
     var ext = this.map.getView().calculateExtent();
     var dx = ext[2] - ext[0];

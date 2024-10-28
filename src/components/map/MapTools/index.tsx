@@ -39,18 +39,6 @@ export class MapTools {
   constructor(map: any, layers: any, callback: Function = () => {}) {
     this.map = map;
     this.layers = layers;
-    const coordinateEl: Element | null = document.querySelector(".brp");
-    this.map.on("pointermove", (evt) => {
-      var lonLat = transform(evt.coordinate, "EPSG:3857", "EPSG:4326");
-      if (lonLat && lonLat.length && coordinateEl) {
-        var lon = ((((lonLat[0] + 180) % 360) + 360) % 360) - 180;
-        coordinateEl.innerHTML = `经度: ${lon.toFixed(
-          3
-        )}, 纬度: ${lonLat[1].toFixed(3)}`;
-
-        coordinateEl.style.display = "block";
-      }
-    });
 
     this.map.on("click", (event: { pixel: any }) => {
       var features = this.map.getFeaturesAtPixel(event.pixel);

@@ -13,9 +13,12 @@ export const defaultState = {
 };
 export const useCardStore = defineStore("cardStore", {
   state: () => {
-    return { list: [], showUuid: "" };
+    return { list: [], showUuid: "", active: "" };
   },
   actions: {
+    setActive(type: string) {
+      this.active = type;
+    },
     addData(data: { type: string }) {
       const { type } = data;
       let p = { ...defaultState, ...data };

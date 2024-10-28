@@ -1,29 +1,26 @@
 <script setup>
+import { toRaw } from "vue";
 import { storeToRefs } from "pinia";
 import { Graticule } from "ol/layer";
 import { useMapStore } from "../../../store";
+import {
+  GRID_LAYER,
+  LAYER_NAMES,
+} from "../../../baseComponent/OpenlayersMap/layers";
 
 const mapStore = useMapStore();
 
-const gridLayerClassName = "gridLayer";
-
-const gridLayer = new Graticule({
-  className: gridLayerClassName,
-  showLabels: true,
-  visible: false,
-});
-
-const { showGrid, mapTool } = storeToRefs(mapStore);
+const { showGrid, map } = storeToRefs(mapStore);
 
 const changeHandle = (visible) => {
-  const map = mapTool.value.map;
-  let layer = map
+  const mapInstance = toRaw(map.value);
+  let layer = mapInstance
     .getLayers()
     .getArray()
-    .find((i) => i.getClassName() == gridLayerClassName);
+    .find((i) => i.getClassName() == LAYER_NAMES.GRID_LAYER);
   if (!layer) {
-    map.addLayer(gridLayer);
-    layer = gridLayer;
+    mapInstance.addLayer(GRID_LAYER);
+    layer = GRID_LAYER;
   }
 
   layer.setVisible(visible);

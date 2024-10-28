@@ -1,19 +1,24 @@
 import Map from "ol/Map";
 import { GeoJSON } from "ol/format";
+import TileLayer from "ol/layer/Tile";
 import Mask from "ol-ext/filter/Mask";
 import Crop from "ol-ext/filter/Crop";
 import { Fill } from "ol/style";
-import { MapTools } from "./index";
-import geojson from "../assets/hongshang.json";
+import { LAYER_NAMES } from "../../../../baseComponent/OpenlayersMap/layers";
+import geojson from "../../assets/hongshang.json";
 
 export class MaskTools {
-  mapTool: MapTools;
   map: Map;
   mask: Mask;
   crop: Crop;
-  constructor({ mapTool }: { mapTool: MapTools }) {
-    this.mapTool = mapTool;
-    this.map = mapTool.map;
+  layer: TileLayer;
+  constructor({ map }: { map: Map }) {
+    this.map = map;
+    this.layer = map
+      .getLayers()
+      .getArray()
+      .find((i) => i.getClassName() == LAYER_NAMES.AMAP_LAYER);
+
     this.initMaskMAp();
   }
   initMaskMAp() {
@@ -51,13 +56,13 @@ export class MaskTools {
       inner: false,
     });
 
-    this.mapTool.layers.AMAP_LAYER.addFilter(this.mask);
-    this.mapTool.layers.AMAP_LAYER.addFilter(this.crop);
+    this.layer.addFilter(this.mask);
+    this.layer.addFilter(this.crop);
     this.map.getView().setZoom(11);
   }
   remove() {
-    this.mapTool.layers.AMAP_LAYER.removeFilter(this.mask);
-    this.mapTool.layers.AMAP_LAYER.removeFilter(this.crop);
+    this.layer.removeFilter(this.mask);
+    this.layer.removeFilter(this.crop);
     this.map.getView().setZoom(5);
   }
 }

@@ -11,35 +11,31 @@ import {
 import { Point } from "ol/geom";
 import { Cluster, Vector as VectorSource } from "ol/source";
 import { Vector as VectorLayer } from "ol/layer";
-import { MapTools } from "./index";
-import { convertToRGBA } from "../../../util";
+import { convertToRGBA } from "../../../../util";
+
 export class ClusterTools {
-  mapTool: MapTools;
   map: Map;
   markers: Array<Feature> = [];
   markersLimitNum: number = 1000;
   clusterslayer!: VectorLayer;
   clusterSource: Cluster;
   constructor({
-    mapTool,
+    map,
     markersLimitNum = 50,
   }: {
-    mapTool: MapTools;
+    map: Map;
     markersLimitNum: number;
   }) {
-    this.mapTool = mapTool;
-    this.map = mapTool.map;
+    this.map = map;
     this.markersLimitNum = markersLimitNum;
   }
-  createMarkers() {
+  create() {
     let extent = this.map.getView().calculateExtent(this.map.getSize());
-    let temp = [];
+    let temp: Array<Feature> = [];
     for (let i = 0; i < this.markersLimitNum; i++) {
-      // 生成随机经纬度
       const lon = Math.random() * (extent[2] - extent[0]) + extent[0]; // 经度在 [-180, 180] 范围内
       const lat = Math.random() * (extent[3] - extent[1]) + extent[1]; // 纬度在 [-90, 90] 范围内
 
-      // 创建一个新的标记
       const marker = new Feature({
         geometry: new Point([lon, lat]),
       });

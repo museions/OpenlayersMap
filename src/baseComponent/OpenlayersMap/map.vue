@@ -37,7 +37,7 @@ const initMap = () => {
   });
 
   const map = new Map({
-    layers: [AMAP_LAYER, VECTOR_LAYER],
+    layers: [AMAP_LAYER, GOOGLE_LAYER, VECTOR_LAYER],
     target: "map",
     view: new View({
       center: olProj.fromLonLat(CENTER),

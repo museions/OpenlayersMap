@@ -1,8 +1,6 @@
 <script setup>
 import { ref, toRaw, onMounted, computed } from "vue";
 import { storeToRefs } from "pinia";
-import VectorLayer from "ol/layer/Vector";
-import VectorSource from "ol/source/Vector";
 import { Draw } from "ol/interaction";
 import Feature from "ol/Feature";
 import { LineString, Point } from "ol/geom";
@@ -15,15 +13,16 @@ import endImg from "../assets/end.svg";
 import startImg from "../assets/start.svg";
 import rightImg from "../../../assets/right.png";
 import { getStyleFunction } from "../../../util";
-
-const vectorLayer = new VectorLayer({
-  source: new VectorSource(),
-  className: "vector-layer",
-});
+import {
+  VECTOR_LAYER,
+  LAYER_NAMES,
+} from "../../../baseComponent/OpenlayersMap/layers";
 
 const panelStore = usePanelStore();
 
 const mapStore = useMapStore();
+
+let vectorLayer;
 
 const PointFeature = ref({
   start_point: null,
@@ -39,9 +38,9 @@ const btnState = computed(() => {
   );
 });
 
-const { mapTool } = storeToRefs(mapStore);
+const { map } = storeToRefs(mapStore);
 
-const mapInstance = toRaw(mapTool.value.map);
+const mapInstance = toRaw(map.value);
 
 const activeIndex = ref("");
 
@@ -104,6 +103,7 @@ const exitDraw = () => {
     mapInstance.getTargetElement().style.cursor = "";
   }
 };
+
 const drawStart = () => {
   exitDraw();
 
@@ -155,6 +155,7 @@ const createElement = (index) => {
 
 let overlays = [];
 const popup = ref();
+
 const addOverlay = ({ coordinates, index, type = "point" }) => {
   const overlay = new Overlay({
     element: type == "point" ? createElement(index) : popup.value,
@@ -167,8 +168,16 @@ const addOverlay = ({ coordinates, index, type = "point" }) => {
 
   overlays.push(overlay);
 };
+
 onMounted(() => {
-  mapInstance.addLayer(vectorLayer);
+  vectorLayer = mapInstance
+    .getLayers()
+    .getArray()
+    .find((i) => i.getClassName() == LAYER_NAMES.VECTOR_LAYER);
+  if (!vectorLayer) {
+    mapInstance.addLayer(VECTOR_LAYER);
+    vectorLayer = VECTOR_LAYER;
+  }
 });
 
 const PathResult = ref([]);

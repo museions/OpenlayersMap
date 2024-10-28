@@ -1,13 +1,15 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, toRaw } from "vue";
 import { storeToRefs } from "pinia";
 import { PANEL_MAP_TYPE } from "../../../const";
 import { useTopicLayerStore, useMapStore, usePanelStore } from "../../../store";
-import { ClusterTools } from "../MapTools/ClusterTools";
-import { HeatMapTools } from "../MapTools/HeatMapTools";
-import { MaskTools } from "../MapTools/MaskTools";
-import { WeatherTools } from "../MapTools/WeatherTools";
-import { TimeTools } from "../MapTools/TimeTools";
+import {
+  HeatMapTools,
+  ClusterTools,
+  MaskTools,
+  TimeTools,
+  WeatherTools,
+} from "../MapTools/ThemeTools";
 import clusterImage from "../assets/cluster.png";
 import heatMapImage from "../assets/heatMap.jpg";
 import maskImage from "../assets/mask.jpg";
@@ -23,86 +25,68 @@ const panelStore = usePanelStore();
 
 const { visible } = storeToRefs(topicStore);
 
-let clusterTool = ref();
-
-let heatMapTool = ref();
-
-let maskTool = ref();
-
-let weatherTool = ref();
-
-let timeTool = ref();
+let toolMap = null;
 
 const hideCard = () => {
   resetMap();
   topicStore.setVisible(false);
 };
 
-const handleCluster = () => {
-  if (!clusterTool.value) {
-    clusterTool.value = new ClusterTools({ mapTool: mapStore.mapTool });
+const handleTools = (type) => {
+  resetMap();
+  const p = { map: toRaw(mapStore.map) };
+  switch (type) {
+    case "cluster":
+      toolMap = new ClusterTools(p);
+      break;
+    case "heatMap":
+      toolMap = new HeatMapTools(p);
+      break;
+    case "maskMap":
+      toolMap = new MaskTools(p);
+      break;
+    case "weatherMap":
+      toolMap = new WeatherTools(p);
+      break;
+    case "timeMap":
+      toolMap = new TimeTools(p);
+      break;
   }
 
-  clusterTool.value.createMarkers();
-};
-
-const handleHeatMap = () => {
-  if (!heatMapTool.value) {
-    heatMapTool.value = new HeatMapTools({ mapTool: mapStore.mapTool });
-  }
-
-  heatMapTool.value.addFeatures();
-};
-
-const handleMaskMap = () => {
-  if (!maskTool.value) {
-    maskTool.value = new MaskTools({ mapTool: mapStore.mapTool });
+  if (toolMap.create) {
+    toolMap.create();
   }
 };
-
-const handleWeatherMap = () => {
-  if (!weatherTool.value) {
-    weatherTool.value = new WeatherTools({ mapTool: mapStore.mapTool });
-  }
-};
-
-const handleTimeMap = () => {
-  if (!timeTool.value) {
-    timeTool.value = new TimeTools({ mapTool: mapStore.mapTool });
-  }
-};
-
-onMounted(() => {});
 
 const MAP_THEMES = [
   {
     name: "聚合图层",
     type: "cluster",
-    callback: handleCluster,
+    callback: () => handleTools("cluster"),
     src: clusterImage,
   },
   {
     name: "热力图",
     type: "heatMap",
-    callback: handleHeatMap,
+    callback: () => handleTools("heatMap"),
     src: heatMapImage,
   },
   {
     name: "蒙版图层",
     type: "maskMap",
-    callback: handleMaskMap,
+    callback: () => handleTools("maskMap"),
     src: maskImage,
   },
   {
     name: "气象专题",
     type: "weatherMap",
-    callback: handleWeatherMap,
+    callback: () => handleTools("weatherMap"),
     src: weatherImage,
   },
   {
     name: "时间专题",
     type: "timeMap",
-    callback: handleTimeMap,
+    callback: () => handleTools("timeMap"),
     src: timeImage,
   },
   {
@@ -124,36 +108,15 @@ const activeType = ref("");
 
 const handleClick = ({ callback, type }) => {
   activeType.value = type;
-  resetMap();
   if (callback) {
     callback();
   }
 };
 
 const resetMap = () => {
-  if (clusterTool.value) {
-    clusterTool.value.remove();
-    clusterTool.value = null;
-  }
-
-  if (heatMapTool.value) {
-    heatMapTool.value.remove();
-    heatMapTool.value = null;
-  }
-
-  if (weatherTool.value) {
-    weatherTool.value.remove();
-    weatherTool.value = null;
-  }
-
-  if (maskTool.value) {
-    maskTool.value.remove();
-    maskTool.value = null;
-  }
-
-  if (timeTool.value) {
-    timeTool.value.remove();
-    timeTool.value = null;
+  if (toolMap) {
+    toolMap.remove();
+    toolMap = null;
   }
 };
 </script>

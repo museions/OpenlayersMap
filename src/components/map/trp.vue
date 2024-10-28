@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref } from "vue";
 import { storeToRefs } from "pinia";
 import {
   useMapStore,
@@ -11,33 +11,16 @@ import { EventBus } from "../../util/index";
 import { TYPES, TOPICTYPES, PANEL_TYPES } from "../../const";
 
 const { mapTool: MapTool } = storeToRefs(useMapStore());
+
 const cardStore = useCardStore();
+
+const { active } = storeToRefs(cardStore);
+
 const panelStore = usePanelStore();
+
 const currentColor = ref("#262626");
-const ulRef = ref();
 
-const { setVisible } = useTopicLayerStore();
-
-const removeClass = () => {
-  let aLi = document.querySelectorAll("li");
-  aLi.forEach((i) => {
-    i.classList.remove("active");
-  });
-};
-
-onMounted(() => {
-  if (ulRef && ulRef.value) {
-    ulRef.value.childNodes.forEach((item) => {
-      item.addEventListener("click", () => {
-        removeClass();
-        let type = item.className;
-        item.classList.add("active");
-        handleClickType(type);
-      });
-    });
-  }
-  EventBus.on("cancel", removeClass);
-});
+const topicLayerStore = useTopicLayerStore();
 
 const handleCompleteCallback = ({ operate, type, uuid, ...rest }) => {
   if (operate == "add") {
@@ -46,34 +29,49 @@ const handleCompleteCallback = ({ operate, type, uuid, ...rest }) => {
     cardStore.setShowUuid(uuid);
   }
 };
-const handleClickType = (type) => {
+const handleClickOpIcon = (type) => {
+  console.log("🚀 ~ handleClickOpIcon ~ type:", type);
+  active.value = type;
+  //路径规划
   if (type == TYPES.PATHPLAN) {
     panelStore.setPanelType(PANEL_TYPES.ROUTE_PLAN);
     return;
   }
-  console.log("🚀 ~ handleClickType ~ type:", type);
-  if (TYPES[type.toUpperCase()]) {
-    setVisible(false);
-    if (MapTool.value) {
-      MapTool.value.callback = handleCompleteCallback;
-      MapTool.value.removeListener();
-      MapTool.value.addListener(type);
-    }
-  } else if (TOPICTYPES[type]) {
-    setVisible(true);
+
+  //专题图
+  if (type == TYPES.TOPICTYPES) {
+    topicLayerStore.setVisible(true);
+    return;
   }
 };
-onBeforeUnmount(() => {
-  EventBus.off("cancel", removeClass);
-});
+
+const List = [
+  { text: "标点", icon: "#icon-point", type: TYPES.POINT },
+  { text: "标线", icon: "#icon-line", type: TYPES.LINESTRING },
+  { text: "标面", icon: "#icon-polygon", type: TYPES.POLYGON },
+  { text: "画圆", icon: "#icon-circle", type: TYPES.CIRCLE },
+  { text: "画矩形", icon: "#icon-rect", type: TYPES.RECT },
+  {
+    text: "测距",
+    icon: "#icon-measure-distance",
+    type: TYPES.MEASUREDISTANCE,
+  },
+  { text: "测面", icon: "#icon-measure-polygon", type: TYPES.MEASUREPOLYGON },
+  { text: "路径规划", icon: "#icon-route", type: TYPES.PATHPLAN },
+  { text: "专题图", icon: "#icon-topic-layers", type: TYPES.TOPICTYPES },
+];
 </script>
 <template>
-  <ul class="Draw_draw__UPVhb" ref="ulRef">
-    <li :class="TYPES.POINT">
+  <ul class="Draw_draw__UPVhb">
+    <li
+      :class="{ active: active == item.type }"
+      v-for="item in List"
+      @click="() => handleClickOpIcon(item.type)"
+    >
       <el-tooltip
         class="box-item"
         effect="dark"
-        content="标点"
+        :content="item.text"
         placement="left"
         :offset="20"
       >
@@ -86,183 +84,7 @@ onBeforeUnmount(() => {
             focusable="false"
             class=""
           >
-            <use xlink:href="#icon-point"></use>
-          </svg>
-        </span>
-      </el-tooltip>
-    </li>
-    <li :class="TYPES.LINESTRING">
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="标线"
-        placement="left"
-        :offset="20"
-      >
-        <span role="img" class="anticon">
-          <svg
-            width="1em"
-            height="1em"
-            :fill="currentColor"
-            aria-hidden="true"
-            focusable="false"
-            class=""
-          >
-            <use xlink:href="#icon-line"></use>
-          </svg>
-        </span>
-      </el-tooltip>
-    </li>
-    <li :class="TYPES.POLYGON">
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="标面"
-        placement="left"
-        :offset="20"
-      >
-        <span role="img" class="anticon"
-          ><svg
-            width="1em"
-            height="1em"
-            :fill="currentColor"
-            aria-hidden="true"
-            focusable="false"
-            class=""
-          >
-            <use xlink:href="#icon-polygon"></use>
-          </svg>
-        </span>
-      </el-tooltip>
-    </li>
-    <li :class="TYPES.CIRCLE">
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="画圆"
-        placement="left"
-        :offset="20"
-      >
-        <span role="img" class="anticon"
-          ><svg
-            width="1em"
-            height="1em"
-            :fill="currentColor"
-            aria-hidden="true"
-            focusable="false"
-            class=""
-          >
-            <use xlink:href="#icon-circle"></use>
-          </svg>
-        </span>
-      </el-tooltip>
-    </li>
-    <li :class="TYPES.RECT">
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="画矩形"
-        placement="left"
-        :offset="20"
-      >
-        <span role="img" class="anticon"
-          ><svg
-            width="1em"
-            height="1em"
-            :fill="currentColor"
-            aria-hidden="true"
-            focusable="false"
-            class=""
-          >
-            <use xlink:href="#icon-rect"></use>
-          </svg>
-        </span>
-      </el-tooltip>
-    </li>
-    <li :class="TYPES.MEASUREDISTANCE">
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="测距"
-        placement="left"
-        :offset="20"
-      >
-        <span role="img" class="anticon"
-          ><svg
-            width="1em"
-            height="1em"
-            :fill="currentColor"
-            aria-hidden="true"
-            focusable="false"
-            class=""
-          >
-            <use xlink:href="#icon-measure-distance"></use>
-          </svg>
-        </span>
-      </el-tooltip>
-    </li>
-    <li :class="TYPES.MEASUREPOLYGON">
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="测面"
-        placement="left"
-        :offset="20"
-      >
-        <span role="img" class="anticon"
-          ><svg
-            width="1em"
-            height="1em"
-            :fill="currentColor"
-            aria-hidden="true"
-            focusable="false"
-            class=""
-          >
-            <use xlink:href="#icon-measure-polygon"></use>
-          </svg>
-        </span>
-      </el-tooltip>
-    </li>
-    <li :class="TYPES.PATHPLAN">
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="路径规划"
-        placement="left"
-        :offset="20"
-      >
-        <span role="img" class="anticon"
-          ><svg
-            width="1em"
-            height="1em"
-            :fill="currentColor"
-            aria-hidden="true"
-            focusable="false"
-            class=""
-          >
-            <use xlink:href="#icon-route"></use>
-          </svg>
-        </span>
-      </el-tooltip>
-    </li>
-    <li :class="TOPICTYPES.TOPICTYPES">
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="专题图"
-        placement="left"
-        :offset="20"
-      >
-        <span role="img" class="anticon"
-          ><svg
-            width="1em"
-            height="1em"
-            :fill="currentColor"
-            aria-hidden="true"
-            focusable="false"
-            class=""
-          >
-            <use xlink:href="#icon-topic-layers"></use>
+            <use :xlink:href="item.icon"></use>
           </svg>
         </span>
       </el-tooltip>
