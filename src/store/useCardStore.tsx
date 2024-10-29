@@ -8,7 +8,7 @@ import {
   INIT_CIRCLE_STATE,
   DRAW_TYPES,
 } from "../const/const.map";
-import { PointTool } from "../components/map/MapTools";
+import { DrawTool, PointTool } from "../components/map/MapTools";
 
 export const defaultState = {
   type: "",
@@ -29,24 +29,24 @@ export const useCardStore = defineStore("cardStore", {
     setMapDrawTool({ drawType, map }: { drawType: string; map: Map }) {
       this.drawToolType = drawType;
       let uuid = uuidv4().replace(/-/g, "");
-      let tool: PointTool;
-      let p = { map, uuid };
+
+      const cb = (data) => {
+        this.addData({ type: drawType, ...data });
+      };
+
+      let p = { map, uuid, type: drawType, cb };
       switch (drawType) {
         case DRAW_TYPES.POINT:
-          tool = new PointTool(p);
-          console.log("🚀 ~ setMapDrawTool ~ tool:", tool);
+          this.drawTool = new PointTool(p);
+          break;
+        case DRAW_TYPES.LINESTRING:
+        case DRAW_TYPES.POLYGON:
+        case DRAW_TYPES.CIRCLE:
+          this.drawTool = new DrawTool(p);
           break;
       }
 
-      this.drawTool = tool;
-
-      const cb = (q) => {
-        console.log("🚀 ~ cb ~ q:", q);
-      };
-
-      tool.insertCb(cb);
-
-      return { tool, drawType };
+      this.drawTool.init();
     },
     setActive(type: string) {
       this.active = type;

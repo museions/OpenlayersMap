@@ -1,12 +1,12 @@
 import { Coordinate } from "ol/coordinate";
 import Map from "ol/Map";
-import VectorLayer from "ol/layer/Vector";
 import Feature from "ol/Feature";
 import * as olStyle from "ol/style";
 import { Point } from "ol/geom";
+import { Type } from "ol/geom/Geometry";
 import Overlay from "ol/Overlay";
 import { getSVGForSrcById } from "../../../../util";
-import { LAYER_NAMES } from "../../../../baseComponent/OpenlayersMap/layers";
+import { BaseTool } from "./BaseTool";
 
 // 创建 overlay 内容的函数
 function createOverlayElement(content: string, uuid: string) {
@@ -17,48 +17,36 @@ function createOverlayElement(content: string, uuid: string) {
   return element;
 }
 
-export class PointTool {
-  map: Map;
-  layers: any = null;
-  callback: Function = () => {};
-  mapEl = document.querySelector(".ol-viewport");
-  uuid: string = "";
-  vectorLayer!: VectorLayer;
-
-  constructor({ map, uuid }: { map: Map; uuid: string }) {
-    this.map = map;
-    this.uuid = uuid;
-    this.vectorLayer = map
-      .getLayers()
-      .getArray()
-      .find((i) => i.getClassName() == LAYER_NAMES.VECTOR_LAYER);
-
+export class PointTool extends BaseTool {
+  handle: Function = () => {};
+  constructor({
+    map,
+    type,
+    uuid,
+    cb,
+  }: {
+    map: Map;
+    type: Type;
+    uuid: string;
+    cb: Function;
+  }) {
+    super({ map, type, uuid, cb });
+  }
+  init() {
     this.mapEl?.classList.add("draw");
-    this.map.on("click", this.handle.bind(this));
-  }
-
-  handle(event: { coordinate: any }) {
-    const coord = event.coordinate;
-    const marker = this.addMarker(coord);
-    const overlay = this.addOverlay(coord);
-    this.callback({
-      operate: "add",
-      uuid: this.uuid,
-      marker,
-      overlay,
-    });
-  }
-
-  insertCb(cb: () => {}) {
-    this.callback = cb;
-  }
-
-  removeAll() {
-    var source = this.layers.vectorLayer.getSource();
-    var features = source.getFeatures();
-    for (var i = 0; i < features.length; i++) {
-      source.removeFeature(features[i]);
-    }
+    this.handle = (event: { coordinate: any }) => {
+      const coord = event.coordinate;
+      const marker = this.addMarker(coord);
+      const overlay = this.addOverlay(coord);
+      this.callback({
+        operate: "add",
+        uuid: this.uuid,
+        marker,
+        overlay,
+      });
+      this.removeListener();
+    };
+    this.map.on("click", this.handle);
   }
 
   addOverlay(coordinate: Coordinate) {
@@ -96,5 +84,6 @@ export class PointTool {
 
   removeListener() {
     this.map.un("click", this.handle);
+    this.mapEl?.classList.remove("draw");
   }
 }

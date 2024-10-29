@@ -264,6 +264,11 @@
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.17.7.tgz#2f776bcb53adc9e13b2c0dfd493dfcbd7de43612"
   integrity sha512-8wTvZawATi/lsmNu10/j2hk1KEP0IvjubqPE3cu1Xz7xfXXt5oCq3SNUz4fMIP4XGF9Ky+Ue2tBA3hcS7LSBlA==
 
+"@types/rbush@3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@types/rbush/-/rbush-3.0.3.tgz#f7ba6bc940e0913678f5df119e7a7803f1842ece"
+  integrity sha512-lX55lR0iYCgapxD3IrgujpQA1zDxwZI5qMRelKvmKAsSMplFVr7wmMpG7/6+Op2tjrgEex8o3vjg8CRDrRNYxg==
+
 "@types/web-bluetooth@^0.0.16":
   version "0.0.16"
   resolved "https://registry.yarnpkg.com/@types/web-bluetooth/-/web-bluetooth-0.0.16.tgz#1d12873a8e49567371f2a75fe3e7f7edca6662d8"
@@ -638,11 +643,12 @@ ol-ext@^4.0.21:
   resolved "https://registry.yarnpkg.com/ol-ext/-/ol-ext-4.0.21.tgz#78ba613d1b95e66629c3ce252da6f8367ba0f3eb"
   integrity sha512-xP4oVD5KBvJW6P9UQwmPcgqMDh6nzUrHjle4qhNqzRW7OkP02mObw5UMGAgz+uhIW8doJ3hYCwy2HcpU1JFpig==
 
-ol@^10.0.0:
-  version "10.0.0"
-  resolved "https://registry.yarnpkg.com/ol/-/ol-10.0.0.tgz#2d37ca13a18375b20b873a4264d69feda3936d8d"
-  integrity sha512-Gzfh61cQAxseCWL97VpGwbF91R2D69y3ABUewTl2H1Hjy6ipCtnoKshgO+n3WBrjsbsyS8QnkfmiJZNQGQNeOA==
+ol@^10.2.1:
+  version "10.2.1"
+  resolved "https://registry.yarnpkg.com/ol/-/ol-10.2.1.tgz#05143d0bbc0d8761385e0acae4ec9074a570bf64"
+  integrity sha512-2bB/y2vEnmzjqynP0NA7Cp8k86No3Psn63Dueicep3E3i09axWRVIG5IS/bylEAGfWQx0QXD/uljkyFoY60Wig==
   dependencies:
+    "@types/rbush" "3.0.3"
     color-rgba "^3.0.0"
     color-space "^2.0.1"
     earcut "^3.0.0"
