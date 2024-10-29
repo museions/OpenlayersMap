@@ -1,6 +1,12 @@
 import Map from "ol/Map";
+import { Coordinate } from "ol/coordinate";
 import BaseLayer from "ol/layer/Base";
 import { Type } from "ol/geom/Geometry";
+import { Point } from "ol/geom";
+import Overlay from "ol/Overlay";
+import Feature from "ol/Feature";
+import { Style, Icon, Circle, Stroke, Fill } from "ol/style";
+import { getSVGForSrcById } from "../../../../util";
 import { LAYER_NAMES } from "../../../../baseComponent/OpenlayersMap/layers";
 
 export class BaseTool {
@@ -32,6 +38,96 @@ export class BaseTool {
       .find((i) => i.getClassName() == LAYER_NAMES.VECTOR_LAYER);
   }
 
+  createOverlay({
+    coordinate,
+    className,
+    offset,
+    stopEvent = true,
+    insertFirst = true,
+    content = "",
+  }: {
+    coordinate: Coordinate;
+    className: string;
+    content?: string;
+    offset: Array<number>;
+    stopEvent?: boolean;
+    insertFirst?: boolean;
+  }) {
+    var overlay = new Overlay({
+      element: this.createOverlayElement({
+        content: content,
+        uuid: this.uuid,
+        className,
+      }),
+      positioning: "bottom-center",
+      offset: offset || [15, -30],
+      position: coordinate,
+      autoPan: false,
+      stopEvent: stopEvent,
+      insertFirst: insertFirst,
+    });
+
+    this.map.addOverlay(overlay);
+    return overlay;
+  }
+
+  createOverlayElement({
+    content,
+    uuid,
+    className,
+  }: {
+    content: string;
+    uuid: string;
+    className: string;
+  }) {
+    var element = document.createElement("div");
+    element.className = className || `popOverlay`;
+    element.id = `overlay_${uuid}_${content}`;
+    element.innerHTML = content;
+    return element;
+  }
+
+  addMarker(coordinate: Coordinate) {
+    const { uuid, vectorLayer } = this;
+    let marker = new Feature({
+      id: uuid,
+      geometry: new Point(coordinate),
+    });
+
+    var markerStyle = new Style({
+      image: new Icon({
+        anchor: [0.5, 1],
+        src: getSVGForSrcById({}),
+        scale: 1,
+      }),
+    });
+    marker.setStyle(markerStyle);
+    vectorLayer?.getSource().addFeature(marker);
+
+    return marker;
+  }
+
+  formatPonit(coordinate: Coordinate) {
+    const point = new Point(coordinate);
+    const pointFeature = new Feature({
+      geometry: point,
+    });
+    pointFeature.setStyle(
+      new Style({
+        image: new Circle({
+          radius: 5,
+          stroke: new Stroke({
+            color: "red",
+            width: 2,
+          }),
+          fill: new Fill({
+            color: "#fff",
+          }),
+        }),
+      })
+    );
+    this.vectorLayer?.getSource().addFeature(pointFeature);
+  }
   init() {
     /*** 实例化后执行初始化方法*/
   }

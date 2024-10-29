@@ -8,7 +8,13 @@ import {
   INIT_CIRCLE_STATE,
   DRAW_TYPES,
 } from "../const/const.map";
-import { DrawTool, PointTool } from "../components/map/MapTools";
+import {
+  DrawTool,
+  PointTool,
+  MeasureDistanceTool,
+  MeasureAreaTool,
+} from "../components/map/MapTools";
+import { Type } from "ol/geom/Geometry";
 
 export const defaultState = {
   type: "",
@@ -26,7 +32,7 @@ export const useCardStore = defineStore("cardStore", {
     };
   },
   actions: {
-    setMapDrawTool({ drawType, map }: { drawType: string; map: Map }) {
+    setMapDrawTool({ drawType, map }: { drawType: Type; map: Map }) {
       this.drawToolType = drawType;
       let uuid = uuidv4().replace(/-/g, "");
 
@@ -42,8 +48,14 @@ export const useCardStore = defineStore("cardStore", {
         case DRAW_TYPES.LINESTRING:
         case DRAW_TYPES.POLYGON:
         case DRAW_TYPES.CIRCLE:
+        case DRAW_TYPES.RECT:
           this.drawTool = new DrawTool(p);
           break;
+        case DRAW_TYPES.MEASUREDISTANCE:
+          this.drawTool = new MeasureDistanceTool(p);
+          break;
+        case DRAW_TYPES.MEASUREPOLYGON:
+          this.drawTool = new MeasureAreaTool(p);
       }
 
       this.drawTool.init();

@@ -35,38 +35,45 @@ export class DrawTool extends BaseTool {
     this.initInteraction();
   }
 
+  draw!: Interaction;
+
   initInteraction() {
-    let draw: Interaction | undefined;
     if ([TYPES.CIRCLE, TYPES.RECT].includes(this.type)) {
-      draw = new Draw({
+      this.draw = new Draw({
         source: this.vectorLayer?.getSource(),
         type: "Circle",
         style: this.drawStyle,
         freehand: true,
         geometryFunction:
-          this.type === TYPES.CIRCLE ? createRegularPolygon(12) : createBox(),
+          this.type === TYPES.CIRCLE ? createRegularPolygon(100) : createBox(),
       });
     } else {
-      draw = new Draw({
+      this.draw = new Draw({
         source: this.vectorLayer?.getSource(),
         type: this.type,
         style: this.drawStyle,
       });
     }
 
-    this.map.addInteraction(draw);
+    this.map.addInteraction(this.draw);
 
-    draw.on("drawend", (evt: { feature: Feature }) => {
-      evt.feature.setStyle(this.drawStyle);
-      evt.feature.setId(this.uuid);
+    this.draw.on("drawend", (evt: { feature: Feature }) => {
+      const { feature } = evt;
+      feature.setId(this.uuid);
+      feature.setStyle(this.drawStyle);
 
-      this.map.removeInteraction(draw);
-      this.callback({
-        operate: "add",
-        type: this.type,
-        uuid: this.uuid,
-        feature: evt.feature,
-      });
+      this.removeListener(feature);
     });
+  }
+
+  removeListener(feature: Feature) {
+    this.map.removeInteraction(this.draw);
+    this.callback({
+      operate: "add",
+      type: this.type,
+      uuid: this.uuid,
+      feature: feature,
+    });
+    this.mapEl?.classList.remove("draw");
   }
 }

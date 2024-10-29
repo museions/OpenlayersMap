@@ -5,7 +5,7 @@ import { Style, Icon } from "ol/style";
 import Overlay from 'ol/Overlay'
 import { useCardStore, useMapStore } from '../../../store';
 import locImgSrc from "../../../assets/loc.png";
-import { getSVGForSrcById } from "../../../util/index.js";
+import { getSVGForSrcById } from "../../../util";
 
 const cardstore = useCardStore()
 const { setItem, getItem: getMarkerData } = cardstore
