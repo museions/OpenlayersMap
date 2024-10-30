@@ -45,7 +45,7 @@ export class BaseTool {
       coordinate: [0, 0],
       offset: [15, 0],
       element: document.querySelector("#helpTxt"),
-      position: "center-left",
+      positioning: "center-left",
     });
 
     this.helpTooltipElement = this.helpTooltip.getElement();
@@ -69,7 +69,7 @@ export class BaseTool {
     insertFirst = true,
     content = "",
     element = null,
-    position = "bottom-center",
+    positioning = "bottom-center",
   }: {
     coordinate: Coordinate;
     className?: string;
@@ -78,7 +78,7 @@ export class BaseTool {
     stopEvent?: boolean;
     insertFirst?: boolean;
     element?: Element | null;
-    position?: Positioning;
+    positioning?: Positioning;
   }) {
     var overlay = new Overlay({
       element:
@@ -88,7 +88,7 @@ export class BaseTool {
           uuid: this.uuid,
           className,
         }),
-      positioning: position,
+      positioning: positioning,
       offset: offset || [15, -30],
       position: coordinate,
       autoPan: false,

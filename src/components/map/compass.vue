@@ -4,7 +4,7 @@ import { storeToRefs } from "pinia";
 import { easeOut } from "ol/easing";
 import { useMapStore } from "../../store";
 
-const { map: MapTool } = storeToRefs(useMapStore());
+const { map: MapInstance } = storeToRefs(useMapStore());
 
 const rotate = ref(0);
 
@@ -21,7 +21,7 @@ const handleRecovery = () => {
 };
 
 const handleRotate = (type) => {
-  const view = MapTool.value.getView();
+  const view = MapInstance.value.getView();
   var rotation = 0;
   if (type == "right") {
     rotation = view.getRotation() + Math.PI / 8;

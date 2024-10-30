@@ -3,7 +3,6 @@ import { defineStore } from "pinia";
 export const useMapStore = defineStore("mapStore", {
   state: () => {
     return {
-      mapTool: {},
       map: {},
       mode: "2D",
       showGrid: false,
@@ -11,9 +10,8 @@ export const useMapStore = defineStore("mapStore", {
     };
   },
   actions: {
-    setMap(mapTool: Object) {
-      this.mapTool = mapTool;
-      this.map = mapTool;
+    setMap(map: Object) {
+      this.map = map;
     },
     setMapMode(mode: string) {
       this.mode = mode;

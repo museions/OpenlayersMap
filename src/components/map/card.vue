@@ -37,7 +37,7 @@ const handleClose = () => {
 const handleDelete = () => {
   let { marker: targetMarker, overlay: targetOverlay, feature } = getItem();
   if (targetOverlay) {
-    MapStore.mapTool.map.removeOverlay(targetOverlay);
+    MapStore.map.removeOverlay(targetOverlay);
   }
   if (targetMarker) {
     MapStore.mapTool.layers.vectorLayer.getSource().removeFeature(targetMarker);
