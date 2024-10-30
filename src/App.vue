@@ -1,9 +1,10 @@
-<script setup lang="ts">
-import Home from "./view/home.vue";
+<script setup>
+import IndexModal from "./components/Modals/index.vue";
 </script>
 
 <template>
-  <home />
+  <router-view />
+  <index-modal />
 </template>
 
 <style scoped></style>
