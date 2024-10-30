@@ -35,7 +35,7 @@ const handleClickOpIcon = (type) => {
 
   //画图
   if (Object.values(DRAW_TYPES).includes(type)) {
-    cardStore.setMapDrawTool({ drawType:type, map: toRaw(map.value) });
+    cardStore.setMapDrawTool({ drawType: type, map: toRaw(map.value) });
   }
 };
 
@@ -48,6 +48,11 @@ const List = [
   {
     text: "测距",
     icon: "#icon-measure-distance",
+    type: TYPES.MEASUREDISTANCE,
+  },
+  {
+    text: "量角",
+    icon: "#icon-protractor",
     type: TYPES.MEASUREDISTANCE,
   },
   { text: "测面", icon: "#icon-measure-polygon", type: TYPES.MEASUREPOLYGON },

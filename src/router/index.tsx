@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import Openlayers from "../view/openlayer_platform.vue";
 import cesium_platform from "../view/cesium_platform.vue";
+import three_platform from "../view/three_platform.vue";
 
 export const routes = [
   {
@@ -12,11 +13,18 @@ export const routes = [
     path: "/openlayers",
     component: Openlayers,
     name: "Openlayers",
+    type: "map",
   },
   {
     path: "/cesium",
     component: cesium_platform,
     name: "Cesium",
+    type: "map",
+  },
+  {
+    path: "/threejs",
+    component: three_platform,
+    name: "Three.js",
   },
 ];
 
