@@ -112,9 +112,23 @@ const formComponent = computed(() => {
       </div>
     </div>
   </div>
+  <div id="helpTxt"></div>
 </template>
 
 <style scoped>
+#helpTxt {
+  position: relative;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  color: white;
+  padding: 4px 8px;
+  opacity: 0.7;
+  white-space: nowrap;
+  font-size: 12px;
+  cursor: default;
+  user-select: none;
+  display: none;
+}
 .card_panel {
   background: #fff;
   border-radius: 3px;

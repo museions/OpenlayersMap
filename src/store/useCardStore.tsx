@@ -24,6 +24,7 @@ export const defaultState = {
 export const useCardStore = defineStore("cardStore", {
   state: () => {
     return {
+      helpMsg: "",
       list: [],
       showUuid: "",
       active: "",
@@ -36,8 +37,8 @@ export const useCardStore = defineStore("cardStore", {
       this.drawToolType = drawType;
       let uuid = uuidv4().replace(/-/g, "");
 
-      const cb = (data) => {
-        this.addData({ type: drawType, ...data });
+      const cb = (data: { type: Type }) => {
+        this.addData({ ...data, type: drawType });
       };
 
       let p = { map, uuid, type: drawType, cb };
@@ -63,7 +64,7 @@ export const useCardStore = defineStore("cardStore", {
     setActive(type: string) {
       this.active = type;
     },
-    addData(data: { type: string }) {
+    addData(data: { type: Type }) {
       const { type } = data;
       let p = { ...defaultState, ...data };
       switch (type) {

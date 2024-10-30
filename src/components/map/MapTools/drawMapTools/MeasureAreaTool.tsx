@@ -43,6 +43,8 @@ export class MeasureAreaTool extends BaseTool {
 
   measureTooltip!: Overlay;
 
+  sketch!: Feature | null;
+
   init() {
     this.draw = new Draw({
       source: this.vectorLayer?.getSource(),
@@ -51,10 +53,33 @@ export class MeasureAreaTool extends BaseTool {
     });
     this.map.addInteraction(this.draw);
 
+    this.setHelpTooltip = (evt: {
+      coordinate: Coordinate;
+      dragging: boolean;
+    }) => {
+      const { coordinate, dragging } = evt;
+      if (dragging) {
+        return;
+      }
+      let helpMsg = "";
+
+      helpMsg = this.sketch
+        ? "移动鼠标，点击左键确定下一点位，鼠标右键结束面积测量"
+        : "选择起点，左键单击确认";
+
+      this.helpTooltip.setPosition(coordinate);
+
+      this.helpTooltipElement.innerHTML = helpMsg;
+      this.helpTooltipElement.style.display = "block";
+    };
+
+    this.map.on("pointermove", this.setHelpTooltip);
+
     this.draw.on(
       "drawstart",
       (evt: { feature: Feature; coordinate: Coordinate }) => {
         const { feature } = evt;
+        this.sketch = feature;
         this.measureTooltip = this.createOverlay({
           coordinate: [0, 0],
           offset: [0, -15],
@@ -89,6 +114,9 @@ export class MeasureAreaTool extends BaseTool {
       unByKey(this.listener);
       this.map.removeInteraction(this.draw);
       this.mapEl?.classList.remove("draw");
+
+      this.helpTooltipElement.style.display = "none";
+      this.map.un("pointermove", this.setHelpTooltip);
     });
   }
 }

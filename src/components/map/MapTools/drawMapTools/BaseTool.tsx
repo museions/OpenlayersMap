@@ -3,7 +3,7 @@ import { Coordinate } from "ol/coordinate";
 import BaseLayer from "ol/layer/Base";
 import { Type } from "ol/geom/Geometry";
 import { Point } from "ol/geom";
-import Overlay from "ol/Overlay";
+import Overlay, { Positioning } from "ol/Overlay";
 import Feature from "ol/Feature";
 import { Style, Icon, Circle, Stroke, Fill } from "ol/style";
 import { getSVGForSrcById } from "../../../../util";
@@ -16,6 +16,10 @@ export class BaseTool {
   uuid: string = "";
   vectorLayer!: BaseLayer | undefined;
   type: Type;
+  helpTooltip!: Overlay; //提示文本
+  setHelpTooltip: Function = () => void 0;
+  helpTooltipElement!: Element;
+  drawIng!: boolean; //是否在绘制
 
   constructor({
     map,
@@ -36,30 +40,55 @@ export class BaseTool {
       .getLayers()
       .getArray()
       .find((i) => i.getClassName() == LAYER_NAMES.VECTOR_LAYER);
+
+    this.helpTooltip = this.createOverlay({
+      coordinate: [0, 0],
+      offset: [15, 0],
+      element: document.querySelector("#helpTxt"),
+      position: "center-left",
+    });
+
+    this.helpTooltipElement = this.helpTooltip.getElement();
+
+    this.map.getViewport().addEventListener("mouseleave", () => {
+      this.helpTooltipElement.style.display = "none";
+    });
+
+    this.map.getViewport().addEventListener("mouseenter", () => {
+      if (this.drawIng) {
+        this.helpTooltipElement.style.display = "block";
+      }
+    });
   }
 
   createOverlay({
     coordinate,
-    className,
+    className = "",
     offset,
     stopEvent = true,
     insertFirst = true,
     content = "",
+    element = null,
+    position = "bottom-center",
   }: {
     coordinate: Coordinate;
-    className: string;
+    className?: string;
     content?: string;
     offset: Array<number>;
     stopEvent?: boolean;
     insertFirst?: boolean;
+    element?: Element | null;
+    position?: Positioning;
   }) {
     var overlay = new Overlay({
-      element: this.createOverlayElement({
-        content: content,
-        uuid: this.uuid,
-        className,
-      }),
-      positioning: "bottom-center",
+      element:
+        element ||
+        this.createOverlayElement({
+          content: content,
+          uuid: this.uuid,
+          className,
+        }),
+      positioning: position,
       offset: offset || [15, -30],
       position: coordinate,
       autoPan: false,

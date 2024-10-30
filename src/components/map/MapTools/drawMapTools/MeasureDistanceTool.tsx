@@ -9,7 +9,7 @@ import { transform } from "ol/proj";
 import { unByKey } from "ol/Observable";
 import { formatLength, formatDistance } from "../../../../util";
 import { BaseTool } from "./BaseTool";
-import { Type } from "ol/geom/Geometry";
+import Geometry, { Type } from "ol/geom/Geometry";
 
 export class MeasureDistanceTool extends BaseTool {
   constructor({
@@ -37,6 +37,8 @@ export class MeasureDistanceTool extends BaseTool {
 
   listenGeometryChange: any;
 
+  sketch!: Feature | null;
+
   init() {
     this.draw = new Draw({
       source: this.vectorLayer?.getSource(),
@@ -46,12 +48,37 @@ export class MeasureDistanceTool extends BaseTool {
 
     this.map.addInteraction(this.draw);
 
+    this.setHelpTooltip = (evt: {
+      coordinate: Coordinate;
+      dragging: boolean;
+    }) => {
+      const { coordinate, dragging } = evt;
+      if (dragging) {
+        return;
+      }
+      let helpMsg = "";
+
+      helpMsg = this.sketch
+        ? "移动鼠标，点击左键确定下一点位，鼠标右键结束距离测量"
+        : "选择起点，左键单击确认";
+
+      this.helpTooltip.setPosition(coordinate);
+
+      this.helpTooltipElement.innerHTML = helpMsg;
+      this.helpTooltipElement.style.display = "block";
+    };
+
+    this.map.on("pointermove", this.setHelpTooltip);
+
     this.draw.on("drawstart", this.handleMeasureLineStart.bind(this));
     this.draw.on("drawend", this.handleMeasureLineEnd.bind(this));
   }
   measureTooltip!: Overlay;
 
-  handleMeasureLineStart(evt: { feature: Feature; coordinate: Coordinate }) {
+  handleMeasureLineStart(evt: {
+    feature: Feature<Geometry>;
+    coordinate: Coordinate;
+  }) {
     this.measureTooltip = this.createOverlay({
       coordinate: [0, 0],
       offset: [0, -15],
@@ -61,6 +88,8 @@ export class MeasureDistanceTool extends BaseTool {
     });
 
     const { feature, coordinate } = evt;
+
+    this.sketch = feature;
 
     let tooltipCoord = coordinate;
 
@@ -79,7 +108,6 @@ export class MeasureDistanceTool extends BaseTool {
       this.measureTooltip.setPosition(tooltipCoord);
 
       // 展示分段距离
-
       const coordinates = geom.getCoordinates().slice(0, -1);
       for (let i = 0; i < coordinates.length; i++) {
         const start = coordinates[i];
@@ -116,5 +144,8 @@ export class MeasureDistanceTool extends BaseTool {
     this.map.removeInteraction(this.draw);
 
     this.mapEl?.classList.remove("draw");
+
+    this.helpTooltipElement.style.display = "none";
+    this.map.un("pointermove", this.setHelpTooltip);
   }
 }
