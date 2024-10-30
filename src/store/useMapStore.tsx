@@ -15,6 +15,7 @@ export const useMapStore = defineStore("mapStore", {
     },
     setMapMode(mode: string) {
       this.mode = mode;
+      return { mode };
     },
     setShowGrid(visible: boolean) {
       this.showGrid = visible;

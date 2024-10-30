@@ -1,18 +1,19 @@
 <script setup>
 import { ref } from "vue";
+import { storeToRefs } from "pinia";
+import { useRouter } from "vue-router";
 import { useMapStore } from "../../store";
 
 const mapStore = useMapStore();
 
-const active = ref(true);
+const { mode } = storeToRefs(mapStore);
+
 const handleChange = () => {
-  const target = !active.value;
-  active.value = target;
-  mapStore.setMapMode(!target ? "3D" : "2D");
+  mapStore.setMapMode(mode.value == "3D" ? "2D" : "3D");
 };
 </script>
 <template>
-  <span @click="handleChange" :class="active ? 'active' : ''"></span>
+  <span @click="handleChange" :class="{ active: mode == '3D' }"></span>
 </template>
 
 <style scoped>
