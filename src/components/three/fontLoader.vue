@@ -17,13 +17,13 @@ const init = () => {
   // 创建场景
   scene = new THREE.Scene();
   // 创建相机
-  let camera = new THREE.PerspectiveCamera(75, 500 / 500, 0.1, 10000);
+  let camera = new THREE.PerspectiveCamera(75, 600 / 500, 0.1, 10000);
   // 修改相机位置
   camera.position.z = 1000;
   camera.lookAt(new THREE.Vector3(0, 0, 0));
   // 创建渲染器
   let renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize(500, 500);
+  renderer.setSize(600, 500);
   document.getElementById("canvas").appendChild(renderer.domElement);
 
   // 添加环境光
@@ -39,7 +39,7 @@ const init = () => {
       color: 0xffffff,
       flatShading: true,
     }),
-    new THREE.MeshPhongMaterial({ color: 0xffe550 }),
+    new THREE.MeshPhongMaterial({ color: 0xff0550 }),
   ];
 
   // 设置相机控件轨道控制器OrbitControls
@@ -104,8 +104,8 @@ const handleRenderText = () => {
   loader.load(textFamily.value, function (font) {
     const geometry = new TextGeometry(text.value, {
       font: font,
-      size: 80,
-      height: 20,
+      size: 120,
+      height: 10,
       curveSegments: 4,
       bevelEnabled: true,
       bevelThickness: 10,

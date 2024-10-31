@@ -9,7 +9,7 @@ import Map from "../components/map/index.vue";
 </template>
 <style scoped>
 .map-container {
-  height: calc(100% - 60px);
+  height: 100%;
   width: 100%;
 }
 </style>
