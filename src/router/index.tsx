@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import Openlayers from "../view/openlayer_platform.vue";
 import cesium_platform from "../view/cesium_platform.vue";
 import three_platform from "../view/three_platform.vue";
+import mapbox_platform from "../view/mapbox_platform.vue";
 
 export const routes = [
   {
@@ -25,6 +26,11 @@ export const routes = [
     path: "/threejs",
     component: three_platform,
     name: "Three.js",
+  },
+  {
+    path: "/mapbox",
+    component: mapbox_platform,
+    name: "Mapbox",
   },
 ];
 
