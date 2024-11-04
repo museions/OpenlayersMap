@@ -13,6 +13,7 @@ import {
   PointTool,
   MeasureDistanceTool,
   MeasureAreaTool,
+  MeasureAngleTool,
 } from "../components/map/MapTools";
 import { Type } from "ol/geom/Geometry";
 
@@ -51,6 +52,9 @@ export const useCardStore = defineStore("cardStore", {
         case DRAW_TYPES.CIRCLE:
         case DRAW_TYPES.RECT:
           this.drawTool = new DrawTool(p);
+          break;
+        case DRAW_TYPES.MEASUREANGLE:
+          this.drawTool = new MeasureAngleTool(p);
           break;
         case DRAW_TYPES.MEASUREDISTANCE:
           this.drawTool = new MeasureDistanceTool(p);

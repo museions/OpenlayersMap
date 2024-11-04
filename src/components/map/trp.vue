@@ -53,7 +53,7 @@ const List = [
   {
     text: "量角",
     icon: "#icon-protractor",
-    type: TYPES.MEASUREDISTANCE,
+    type: TYPES.MEASUREANGLE,
   },
   { text: "测面", icon: "#icon-measure-polygon", type: TYPES.MEASUREPOLYGON },
   { text: "路径规划", icon: "#icon-route", type: TYPES.PATHPLAN },

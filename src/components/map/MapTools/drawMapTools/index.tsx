@@ -6,4 +6,6 @@ export * from "./DrawTool";
 
 export * from "./MeasureDistanceTool";
 
+export * from "./MeasureAngleTool";
+
 export * from "./MeasureAreaTool";

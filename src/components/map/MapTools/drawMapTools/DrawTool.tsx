@@ -48,7 +48,7 @@ export class DrawTool extends BaseTool {
         style: this.drawStyle,
         freehand: true,
         geometryFunction:
-          this.type === TYPES.CIRCLE ? createRegularPolygon(100) : createBox(),
+          this.type === TYPES.CIRCLE ? createRegularPolygon(300) : createBox(),
       });
     } else {
       this.draw = new Draw({
