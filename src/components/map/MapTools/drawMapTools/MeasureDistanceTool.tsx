@@ -99,7 +99,7 @@ export class MeasureDistanceTool extends BaseTool {
 
       let startPoint = geom.getFirstCoordinate();
 
-      this.addMarker(startPoint);
+      this.addMarker({ coordinate: startPoint });
 
       tooltipCoord = geom.getLastCoordinate(); // 折线的最后一个点的坐标
 

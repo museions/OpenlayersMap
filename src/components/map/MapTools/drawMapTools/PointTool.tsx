@@ -22,7 +22,7 @@ export class PointTool extends BaseTool {
     this.mapEl?.classList.add("draw");
     this.handle = (event: { coordinate: Coordinate }) => {
       const coord = event.coordinate;
-      const marker = this.addMarker(coord);
+      const marker = this.addMarker({ coordinate: coord });
       const overlay = this.createOverlay({
         coordinate: coord,
         className: "popMarker",

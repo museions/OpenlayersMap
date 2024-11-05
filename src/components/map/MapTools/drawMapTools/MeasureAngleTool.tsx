@@ -27,7 +27,7 @@ export class MeasureAngleTool extends BaseTool {
   lineStyle = new Style({
     stroke: new Stroke({
       color: "red",
-      width: 1,
+      width: 2,
     }),
   });
 
@@ -85,12 +85,28 @@ export class MeasureAngleTool extends BaseTool {
     this.listenGeometryChange = feature.getGeometry().on("change", (evt) => {
       const geom = evt.target;
 
+      let startPoint = geom.getFirstCoordinate();
+
+      this.addMarker({ coordinate: startPoint, symbolId: "A", anchor: [0, 0] });
+
       // 展示分段距离
       const coordinates = geom.getCoordinates().slice(0, -1);
 
+      if (coordinates.length > 1) {
+        this.addMarker({
+          coordinate: coordinates[1],
+          symbolId: "B",
+          anchor: [1, 1],
+        });
+      }
       const pointscount = geom.getCoordinates();
       if (pointscount.length >= 4) {
         console.log(coordinates, calculateAngle(coordinates));
+        this.addMarker({
+          coordinate: coordinates[2],
+          symbolId: "C",
+          anchor: [0, 0],
+        });
         this.addAngleMark({
           coordinate: coordinates[1],
           Angles: calculateAngle(coordinates),

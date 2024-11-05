@@ -116,7 +116,17 @@ export class BaseTool {
     return element;
   }
 
-  addMarker(coordinate: Coordinate) {
+  addMarker({
+    coordinate,
+    symbolId = "icon-symbol-one",
+    color = "red",
+    anchor = [0.5, 1],
+  }: {
+    coordinate: Coordinate;
+    symbolId?: string;
+    color?: string;
+    anchor?: Array<number>;
+  }) {
     const { uuid, vectorLayer } = this;
     let marker = new Feature({
       id: uuid,
@@ -125,8 +135,8 @@ export class BaseTool {
 
     var markerStyle = new Style({
       image: new Icon({
-        anchor: [0.5, 1],
-        src: getSVGForSrcById({}),
+        anchor: anchor,
+        src: getSVGForSrcById({ symbolId, color }),
         scale: 1,
       }),
     });

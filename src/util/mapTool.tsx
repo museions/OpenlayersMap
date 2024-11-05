@@ -179,36 +179,66 @@ export const calculateAngle = (points: [any, any, any]) => {
 
   // 计算向量 AB 与水平线 (x轴) 的夹角
   const angleABWithXAxis = Math.atan2(AB.y, AB.x) * (180 / Math.PI);
-  console.log(
-    "🚀 ~ calculateAngle ~ Math.atan2(AB.y, AB.x):",
-    Math.atan2(AB.y, AB.x)
-  );
-  const value = Math.atan2(AB.y, AB.x);
   let rotate = 180 - ((angleABWithXAxis + 180) % 360),
     angles = Number(Math.abs(angle.toFixed(0)));
-  if (AB.x > 0) {
-    rotate = rotate - angles;
-    if (AB.y > 0) {
-      console.log("第一象限 0 - Math.PI/2", value, angleABWithXAxis);
-    } else if (AB.y < 0) {
-      console.log("第四象限 -Math.PI/2 - 0", value, angleABWithXAxis);
-    }
-  } else if (AB.x < 0) {
-    if (AB.y > 0) {
-      console.log("第二象限 Math.PI/2 - Math.PI", value, angleABWithXAxis);
-    } else if (AB.y < 0) {
-      console.log("第三象限 -Math.PI - -Math.PI/2", value, angleABWithXAxis);
-    }
-  } else if (AB.x == 0) {
-    if (AB.y > 0) {
-      console.log("x轴上半轴 Math.PI/2", value, angleABWithXAxis);
-    } else if (AB.y < 0) {
-      console.log("x轴下半轴 -Math.PI/2", value, angleABWithXAxis);
-    }
-  }
 
+  console.log(calculateAnglePoint(points));
   return {
     Angle: angles,
     rotate: rotate,
   };
 };
+
+function calculateAnglePoint(points) {
+  const [A, B, C] = points;
+  const [Ax, Ay] = A;
+  const [Bx, By] = B;
+  const [Cx, Cy] = C;
+
+  // 计算向量 BA 和 BC
+  const BA = { x: Ax - Bx, y: Ay - By };  // BA 向量（从 B 到 A）
+  const BC = { x: Cx - Bx, y: Cy - By };  // BC 向量（从 B 到 C）
+
+  // 计算 BA 和 BC 向量与 X 轴的夹角（单位：度）
+  let angleBA = Math.atan2(BA.y, BA.x) * (180 / Math.PI);  // [-180, 180] 范围
+  let angleBC = Math.atan2(BC.y, BC.x) * (180 / Math.PI);  // [-180, 180] 范围
+
+  // 计算 BA 向量与 X 轴负半轴的夹角
+  if (angleBA >= 0 && angleBA < 90) {
+    // 第一象限，夹角为正钝角
+    angleBA = 180 - angleBA;
+  } else if (angleBA >= 90 && angleBA <= 180) {
+    // 第二象限，夹角为正锐角
+    angleBA = 180 - angleBA;
+  } else if (angleBA < 0 && angleBA >= -90) {
+    // 第四象限，夹角为负钝角
+    angleBA = Math.abs(angleBA) -180
+  } else {
+    // 第三象限，夹角为负锐角
+    angleBA = Math.abs(angleBA) - 180;
+  }
+
+  // 计算 BC 向量与 X 轴负半轴的夹角
+  if (angleBC >= 0 && angleBC < 90) {
+    // 第一象限，夹角为正钝角
+    angleBC = 180 - angleBC;
+  } else if (angleBC >= 90 && angleBC <= 180) {
+    // 第二象限，夹角为正锐角
+    angleBC = 180 - angleBC;
+  } else if (angleBC < 0 && angleBC >= -90) {
+    // 第四象限，夹角为负钝角
+    angleBC = Math.abs(angleBC) - 180;
+  } else {
+    // 第三象限，夹角为负锐角
+    angleBC = Math.abs(angleBC) - 180;
+  }
+
+  // 确保夹角的绝对值在 [0, 180] 范围内
+  // angleBA = Math.abs(angleBA);
+  // angleBC = Math.abs(angleBC);
+
+  return {
+    angleBA: angleBA, // BA 向量与 X 轴负半轴的夹角
+    angleBC: angleBC  // BC 向量与 X 轴负半轴的夹角
+  };
+}
