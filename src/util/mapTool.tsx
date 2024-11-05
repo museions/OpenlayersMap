@@ -183,9 +183,32 @@ export const calculateAngle = (points: [any, any, any]) => {
     "🚀 ~ calculateAngle ~ Math.atan2(AB.y, AB.x):",
     Math.atan2(AB.y, AB.x)
   );
+  const value = Math.atan2(AB.y, AB.x);
+  let rotate = 180 - ((angleABWithXAxis + 180) % 360),
+    angles = Number(Math.abs(angle.toFixed(0)));
+  if (AB.x > 0) {
+    rotate = rotate - angles;
+    if (AB.y > 0) {
+      console.log("第一象限 0 - Math.PI/2", value, angleABWithXAxis);
+    } else if (AB.y < 0) {
+      console.log("第四象限 -Math.PI/2 - 0", value, angleABWithXAxis);
+    }
+  } else if (AB.x < 0) {
+    if (AB.y > 0) {
+      console.log("第二象限 Math.PI/2 - Math.PI", value, angleABWithXAxis);
+    } else if (AB.y < 0) {
+      console.log("第三象限 -Math.PI - -Math.PI/2", value, angleABWithXAxis);
+    }
+  } else if (AB.x == 0) {
+    if (AB.y > 0) {
+      console.log("x轴上半轴 Math.PI/2", value, angleABWithXAxis);
+    } else if (AB.y < 0) {
+      console.log("x轴下半轴 -Math.PI/2", value, angleABWithXAxis);
+    }
+  }
 
   return {
-    Angle: Number(Math.abs(angle.toFixed(0))),
-    rotate: 180 - ((angleABWithXAxis + 180) % 360),
+    Angle: angles,
+    rotate: rotate,
   };
 };
