@@ -178,10 +178,14 @@ export const calculateAngle = (points: [any, any, any]) => {
   const angle = crossProduct < 0 ? angleInDegrees - 180 : 180 - angleInDegrees;
 
   // 计算向量 AB 与水平线 (x轴) 的夹角
-  const angleABWithXAxis = -Math.atan2(AB.y, AB.x) * (180 / Math.PI);
+  const angleABWithXAxis = Math.atan2(AB.y, AB.x) * (180 / Math.PI);
+  console.log(
+    "🚀 ~ calculateAngle ~ Math.atan2(AB.y, AB.x):",
+    Math.atan2(AB.y, AB.x)
+  );
 
   return {
     Angle: Number(Math.abs(angle.toFixed(0))),
-    rotate: angleABWithXAxis,
+    rotate: 180 - ((angleABWithXAxis + 180) % 360),
   };
 };

@@ -66,7 +66,7 @@ export const createAngleSVG = (Angles: { Angle: number; rotate: number }) => {
     lastD = d_2;
   }
 
-  const svgstr = `<svg width="200" height="200" viewBox="0 0 200 200" style="transform:rotate(${Angles.rotate});transform-origin: 100px 100px;"  transform="rotate(${Angles.rotate})" xmlns="http://www.w3.org/2000/svg">
+  const svgstr = `<svg width="200" height="200" viewBox="0 0 200 200" style="transform:rotate(${Angles.rotate}deg);transform-origin: 100px 100px;"  transform="rotate(${Angles.rotate})" xmlns="http://www.w3.org/2000/svg">
         <path id="arc" fill="none" stroke="blue" stroke-width="2" d="${lastD}" />
         <line id="radial1" x1="100" y1="100" x2="${startX}" y2="${startY}" stroke="red" stroke-width="2" stroke-dasharray="5,5" />
         <line id="radial2" x1="100" y1="100" x2="${endX}" y2="${endY}" stroke="red" stroke-width="2" stroke-dasharray="5,5" />
