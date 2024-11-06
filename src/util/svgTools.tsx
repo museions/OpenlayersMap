@@ -66,13 +66,18 @@ export const createAngleSVG = (Angles: { Angle: number; rotate: number }) => {
     lastD = d_2;
   }
 
-  const svgstr = `<svg width="200" height="200" viewBox="0 0 200 200" style="transform:rotate(${Angles.rotate}deg);transform-origin: 100px 100px;"  transform="rotate(${Angles.rotate})" xmlns="http://www.w3.org/2000/svg">
-        <path id="arc" fill="none" stroke="red" stroke-width="1" d="${lastD}" />
-        <text fill="black" font-size="16" text-anchor="middle">
+  let svgText =
+    Angles.Angle == 90
+      ? ""
+      : `<text fill="black" font-size="16" text-anchor="middle">
             <textPath href="#arc" startOffset="50%" side="left">
                 <tspan dy="-5">${Angles.Angle}°</tspan>
             </textPath>
-        </text>
+        </text>`;
+
+  const svgstr = `<svg width="200" height="200" viewBox="0 0 200 200" style="transform:rotate(${Angles.rotate}deg);transform-origin: 100px 100px;"  transform="rotate(${Angles.rotate})" xmlns="http://www.w3.org/2000/svg">
+        <path id="arc" fill="none" stroke="red" stroke-width="1" d="${lastD}" />
+${svgText}
     </svg>`;
 
   return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgstr);

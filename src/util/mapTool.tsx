@@ -1,6 +1,7 @@
 import * as sphere from "ol/sphere";
 import { Style, Stroke, Icon } from "ol/style";
 import { Geometry, Geometry, Point } from "ol/geom";
+import { Coordinate } from "ol/coordinate";
 
 export const formatDistance = (dis: number) => {
   if (dis > 100) {
@@ -146,7 +147,7 @@ export const getStyleFunction = ({
   };
 };
 
-export const calculateAngle = (points: [any, any, any]) => {
+export const calculateAngle = (points: Coordinate[]) => {
   // 提取坐标点 A, B, C
   const [A, B, C] = points;
 
@@ -177,14 +178,97 @@ export const calculateAngle = (points: [any, any, any]) => {
   // 如果叉积为负
   const angle = crossProduct < 0 ? angleInDegrees - 180 : 180 - angleInDegrees;
 
-  // 计算向量 AB 与水平线 (x轴) 的夹角
-  const angleABWithXAxis = Math.atan2(AB.y, AB.x) * (180 / Math.PI);
-  let rotate = 180 - ((angleABWithXAxis + 180) % 360),
-    angles = Number(Math.abs(angle.toFixed(0)));
+  const { angleBA, angleBC } = calculateAnglePoint(points);
+  console.log("🚀 ~ calculateAngle ~ angleBA, angleBC:", angleBA, angleBC);
 
-  console.log(calculateAnglePoint(points));
+  let rotate = 0;
+  if (angleBA < 0 && angleBC < 0) {
+    rotate = -Math.max(Math.abs(angleBA), Math.abs(angleBC));
+  }
+  if (angleBA > 0 && angleBC > 0) {
+    rotate = Math.min(Math.abs(angleBA), Math.abs(angleBC));
+  }
+
+  //第一二三象限 不同象限
+
+  if (angleBA >= 135 && angleBA <= 180 && angleBC <= -45 && angleBC >= -90) {
+    rotate = angleBA;
+  }
+  if (angleBC >= 135 && angleBC <= 180 && angleBA <= -45 && angleBA >= -90) {
+    rotate = angleBC;
+  }
+
+  if (angleBA >= 135 && angleBA <= 180 && angleBC <= 0 && angleBC >= -45) {
+    rotate = angleBC;
+  }
+  if (angleBC >= 135 && angleBC <= 180 && angleBA <= 0 && angleBA >= -45) {
+    rotate = angleBA;
+  }
+
+  if (angleBA >= 90 && angleBA <= 135 && angleBC <= 0 && angleBC >= -45) {
+    rotate = angleBC;
+  }
+  if (angleBC >= 90 && angleBC <= 135 && angleBA <= 0 && angleBA >= -45) {
+    rotate = angleBA;
+  }
+  if (angleBA >= 90 && angleBA <= 135 && angleBC >= -90 && angleBC <= -45) {
+    rotate = angleBA;
+  }
+
+  if (angleBC >= 90 && angleBC <= 135 && angleBA >= -90 && angleBA <= -45) {
+    rotate = angleBC;
+  }
+
+  if (angleBA >= 0 && angleBA <= 90 && angleBC <= 0 && angleBC >= -90) {
+    rotate = angleBC;
+  }
+
+  if (angleBC >= 0 && angleBC <= 90 && angleBA <= 0 && angleBA >= -90) {
+    rotate = angleBA;
+  }
+
+  //第一二四象限不同象限
+  if (angleBC >= -180 && angleBC <= -90 && angleBA <= 180 && angleBA >= 90) {
+    rotate = angleBA;
+  }
+
+  if (angleBA >= -180 && angleBA <= -90 && angleBC <= 180 && angleBC >= 90) {
+    rotate = angleBC;
+  }
+
+  if (angleBC >= -135 && angleBC <= -90 && angleBA >= 0 && angleBA <= 45) {
+    rotate = angleBC;
+  }
+
+  if (angleBC >= -135 && angleBC <= -90 && angleBA >= 45 && angleBA <= 90) {
+    rotate = angleBA;
+  }
+
+  if (angleBA >= -135 && angleBA <= -90 && angleBC >= 0 && angleBC <= 45) {
+    rotate = angleBA;
+  }
+
+  if (angleBA >= -135 && angleBA <= -90 && angleBC >= 45 && angleBC <= 90) {
+    rotate = angleBC;
+  }
+
+  if (angleBC >= -180 && angleBC <= -135 && angleBA >= 0 && angleBA <= 45) {
+    rotate = angleBC;
+  }
+
+  if (angleBC >= -180 && angleBC <= -135 && angleBA >= 45 && angleBA <= 90) {
+    rotate = angleBA;
+  }
+
+  if (angleBA >= -180 && angleBA <= -135 && angleBC >= 0 && angleBC <= 45) {
+    rotate = angleBA;
+  }
+  if (angleBA >= -180 && angleBA <= -135 && angleBC >= 45 && angleBC <= 90) {
+    rotate = angleBC;
+  }
+
   return {
-    Angle: angles,
+    Angle: Number(Math.abs(angle.toFixed(0))),
     rotate: rotate,
   };
 };
@@ -196,12 +280,12 @@ function calculateAnglePoint(points) {
   const [Cx, Cy] = C;
 
   // 计算向量 BA 和 BC
-  const BA = { x: Ax - Bx, y: Ay - By };  // BA 向量（从 B 到 A）
-  const BC = { x: Cx - Bx, y: Cy - By };  // BC 向量（从 B 到 C）
+  const BA = { x: Ax - Bx, y: Ay - By }; // BA 向量（从 B 到 A）
+  const BC = { x: Cx - Bx, y: Cy - By }; // BC 向量（从 B 到 C）
 
   // 计算 BA 和 BC 向量与 X 轴的夹角（单位：度）
-  let angleBA = Math.atan2(BA.y, BA.x) * (180 / Math.PI);  // [-180, 180] 范围
-  let angleBC = Math.atan2(BC.y, BC.x) * (180 / Math.PI);  // [-180, 180] 范围
+  let angleBA = Math.atan2(BA.y, BA.x) * (180 / Math.PI); // [-180, 180] 范围
+  let angleBC = Math.atan2(BC.y, BC.x) * (180 / Math.PI); // [-180, 180] 范围
 
   // 计算 BA 向量与 X 轴负半轴的夹角
   if (angleBA >= 0 && angleBA < 90) {
@@ -212,7 +296,7 @@ function calculateAnglePoint(points) {
     angleBA = 180 - angleBA;
   } else if (angleBA < 0 && angleBA >= -90) {
     // 第四象限，夹角为负钝角
-    angleBA = Math.abs(angleBA) -180
+    angleBA = Math.abs(angleBA) - 180;
   } else {
     // 第三象限，夹角为负锐角
     angleBA = Math.abs(angleBA) - 180;
@@ -239,6 +323,6 @@ function calculateAnglePoint(points) {
 
   return {
     angleBA: angleBA, // BA 向量与 X 轴负半轴的夹角
-    angleBC: angleBC  // BC 向量与 X 轴负半轴的夹角
+    angleBC: angleBC, // BC 向量与 X 轴负半轴的夹角
   };
 }

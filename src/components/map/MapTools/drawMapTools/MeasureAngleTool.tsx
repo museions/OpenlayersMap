@@ -22,6 +22,7 @@ export class MeasureAngleTool extends BaseTool {
     cb: Function;
   }) {
     super({ map, type, uuid, cb });
+    this.Points = [];
   }
 
   lineStyle = new Style({
@@ -35,9 +36,11 @@ export class MeasureAngleTool extends BaseTool {
 
   listenGeometryChange: any;
 
-  sketch!: Feature | null;
-
   lineCount: number = 0;
+
+  Points: Array<Coordinate> = [];
+
+  marker!: Feature;
 
   init() {
     this.draw = new Draw({
@@ -58,14 +61,28 @@ export class MeasureAngleTool extends BaseTool {
       }
       let helpMsg = "";
 
-      helpMsg = this.sketch
-        ? "移动鼠标，点击左键确定下一点位"
-        : "选择起点，左键单击确认";
-
+      const length = this.Points.length;
+      if (length == 0) {
+        helpMsg = "选择顶点A，左键单击确认";
+      } else if (length == 1) {
+        helpMsg = "移动鼠标，选择顶点B";
+      } else if (length == 3) {
+        helpMsg = "移动鼠标，选择顶点C";
+      }
+      if (this.Points.length >= 2) {
+        this.Points[2] = coordinate;
+      }
       this.helpTooltip.setPosition(coordinate);
 
       this.helpTooltipElement.innerHTML = helpMsg;
       this.helpTooltipElement.style.display = "block";
+
+      if (this.Points.length == 3) {
+        this.addAngleMark({
+          coordinate: this.Points[1],
+          Angles: calculateAngle(this.Points),
+        });
+      }
     };
 
     this.map.on("pointermove", this.setHelpTooltip);
@@ -80,14 +97,14 @@ export class MeasureAngleTool extends BaseTool {
   }) {
     const { feature, coordinate } = evt;
 
-    this.sketch = feature;
-
     this.listenGeometryChange = feature.getGeometry().on("change", (evt) => {
       const geom = evt.target;
 
       let startPoint = geom.getFirstCoordinate();
 
       this.addMarker({ coordinate: startPoint, symbolId: "A", anchor: [0, 0] });
+      this.formatPonit(startPoint);
+      this.Points[0] = startPoint;
 
       // 展示分段距离
       const coordinates = geom.getCoordinates().slice(0, -1);
@@ -98,10 +115,11 @@ export class MeasureAngleTool extends BaseTool {
           symbolId: "B",
           anchor: [1, 1],
         });
+        this.formatPonit(coordinates[1]);
+        this.Points[1] = coordinates[1];
       }
       const pointscount = geom.getCoordinates();
       if (pointscount.length >= 4) {
-        console.log(coordinates, calculateAngle(coordinates));
         this.addMarker({
           coordinate: coordinates[2],
           symbolId: "C",
@@ -111,6 +129,7 @@ export class MeasureAngleTool extends BaseTool {
           coordinate: coordinates[1],
           Angles: calculateAngle(coordinates),
         });
+        this.formatPonit(coordinates[2]);
         this.draw.finishDrawing();
       }
     });
@@ -127,6 +146,7 @@ export class MeasureAngleTool extends BaseTool {
 
     this.helpTooltipElement.style.display = "none";
     this.map.un("pointermove", this.setHelpTooltip);
+    this.Points = [];
   }
 
   addAngleMark({
@@ -137,7 +157,10 @@ export class MeasureAngleTool extends BaseTool {
     Angles: { Angle: number; rotate: number };
   }) {
     const { uuid, vectorLayer } = this;
-    let marker = new Feature({
+    if (this.marker) {
+      vectorLayer?.getSource().removeFeature(this.marker);
+    }
+    this.marker = new Feature({
       id: uuid,
       geometry: new Point(coordinate),
     });
@@ -149,7 +172,8 @@ export class MeasureAngleTool extends BaseTool {
         scale: 1,
       }),
     });
-    marker.setStyle(markerStyle);
-    vectorLayer?.getSource().addFeature(marker);
+
+    this.marker.setStyle(markerStyle);
+    vectorLayer?.getSource().addFeature(this.marker);
   }
 }
