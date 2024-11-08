@@ -13,7 +13,7 @@ import waterMarkerControl from "./waterMarkerControl.vue";
   position: absolute;
   background: #ffffff;
   top: 65px;
-  left: 50px;
+  left: 150px;
   color: #000000;
   padding: 2px 6px;
   border-radius: 2px;

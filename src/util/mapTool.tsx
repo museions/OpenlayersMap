@@ -317,10 +317,6 @@ function calculateAnglePoint(points) {
     angleBC = Math.abs(angleBC) - 180;
   }
 
-  // 确保夹角的绝对值在 [0, 180] 范围内
-  // angleBA = Math.abs(angleBA);
-  // angleBC = Math.abs(angleBC);
-
   return {
     angleBA: angleBA, // BA 向量与 X 轴负半轴的夹角
     angleBC: angleBC, // BC 向量与 X 轴负半轴的夹角

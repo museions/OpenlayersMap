@@ -16,6 +16,10 @@ import {
   ZoomToExtent,
   OverviewMap,
 } from "ol/control";
+import PrintDialog from "ol-ext/control/PrintDialog";
+import { jsPDF } from "jspdf";
+import { saveAs } from "file-saver";
+import { v4 as uuidv4 } from "uuid";
 import {
   VECTOR_LAYER,
   AMAP_URL,
@@ -58,6 +62,49 @@ const initMap = () => {
   map.addControl(new ZoomToExtent({ extent: EXTENT }));
 
   emit("setMap", map);
+
+  const printControl = new PrintDialog({
+    lang: "zh",
+  });
+  printControl.setSize("A4");
+  map.addControl(printControl);
+
+  printControl.on(["print", "error"], function (e) {
+    // Print success
+    if (e.image) {
+      const uuid = uuidv4().replace(/-/g, "");
+      if (e.pdf) {
+        var pdf = new jsPDF({
+          orientation: e.print.orientation,
+          unit: e.print.unit,
+          format: e.print.size,
+        });
+        pdf.addImage(
+          e.image,
+          "JPEG",
+          e.print.position[0],
+          e.print.position[0],
+          e.print.imageWidth,
+          e.print.imageHeight
+        );
+        pdf.save(e.print.legend ? "legend.pdf" : `openlayers_${uuid}.pdf`);
+      } else {
+        // Save image as file
+        e.canvas.toBlob(
+          function (blob) {
+            var name =
+              (e.print.legend ? "legend." : `map_${uuid}.`) +
+              e.imageType.replace("image/", "");
+            saveAs(blob, name);
+          },
+          e.imageType,
+          e.quality
+        );
+      }
+    } else {
+      console.warn("No canvas to export");
+    }
+  });
 };
 
 onMounted(() => {
