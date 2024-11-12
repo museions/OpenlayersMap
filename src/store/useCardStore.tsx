@@ -14,6 +14,7 @@ import {
   MeasureDistanceTool,
   MeasureAreaTool,
   MeasureAngleTool,
+  AzimuthTool,
 } from "../components/map/MapTools";
 import { Type } from "ol/geom/Geometry";
 
@@ -61,6 +62,10 @@ export const useCardStore = defineStore("cardStore", {
           break;
         case DRAW_TYPES.MEASUREPOLYGON:
           this.drawTool = new MeasureAreaTool(p);
+          break;
+        case DRAW_TYPES.AZIMUTH:
+          this.drawTool = new AzimuthTool(p);
+          break;
       }
 
       this.drawTool.init();

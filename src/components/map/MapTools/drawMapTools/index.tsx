@@ -9,3 +9,5 @@ export * from "./MeasureDistanceTool";
 export * from "./MeasureAngleTool";
 
 export * from "./MeasureAreaTool";
+
+export * from './AzimuthTool'

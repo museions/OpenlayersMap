@@ -179,7 +179,6 @@ export const calculateAngle = (points: Coordinate[]) => {
   const angle = crossProduct < 0 ? angleInDegrees - 180 : 180 - angleInDegrees;
 
   const { angleBA, angleBC } = calculateAnglePoint(points);
-  console.log("🚀 ~ calculateAngle ~ angleBA, angleBC:", angleBA, angleBC);
 
   let rotate = 0;
   if (angleBA < 0 && angleBC < 0) {

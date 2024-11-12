@@ -138,6 +138,7 @@ export class BaseTool {
         anchor: anchor,
         src: getSVGForSrcById({ symbolId, color }),
         scale: 1,
+        rotateWithView: true
       }),
     });
     marker.setStyle(markerStyle);

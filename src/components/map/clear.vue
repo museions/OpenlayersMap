@@ -61,28 +61,6 @@ const openSettingModal = () => {
         </span>
       </el-tooltip>
     </li>
-    <li @click="()=>{}">
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="打印"
-        placement="left"
-        :offset="20"
-      >
-        <span role="img" class="anticon">
-          <svg
-            width="1em"
-            height="1em"
-            fill="currentColor"
-            aria-hidden="true"
-            focusable="false"
-            class=""
-          >
-            <use xlink:href="#icon-printMap"></use>
-          </svg>
-        </span>
-      </el-tooltip>
-    </li>
   </ul>
 </template>
 <style scoped>

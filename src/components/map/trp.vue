@@ -55,6 +55,11 @@ const List = [
     icon: "#icon-protractor",
     type: TYPES.MEASUREANGLE,
   },
+  {
+    text: "方位角",
+    icon: "#icon-azimuth",
+    type: TYPES.AZIMUTH,
+  },
   { text: "测面", icon: "#icon-measure-polygon", type: TYPES.MEASUREPOLYGON },
   { text: "路径规划", icon: "#icon-route", type: TYPES.PATHPLAN },
   { text: "专题图", icon: "#icon-topic-layers", type: TYPES.TOPICTYPES },
