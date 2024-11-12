@@ -54,7 +54,14 @@ export const createAngleSVG = (Angles: { Angle: number; rotate: number }) => {
   const startY = centerX;
   const startX = centerY - radius;
 
-  const largeArcFlag = adjustedAngle > 180 ? 0 : 1;
+  // const largeArcFlag = adjustedAngle > 180 ? 0 : 1;
+
+  let largeArcFlag;
+  if (adjustedAngle >= 450 && adjustedAngle <= 629) {
+    largeArcFlag = 0;
+  } else if (adjustedAngle >= 270 && adjustedAngle < 450) {
+    largeArcFlag = 1;
+  }
 
   const d_1 = `M ${startX} ${startY} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${endX} ${endY}`;
 

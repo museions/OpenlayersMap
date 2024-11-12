@@ -8,6 +8,8 @@ import { calculateAngle, createAngleSVG } from "../../../../util";
 import { BaseTool } from "./BaseTool";
 import Geometry, { Type } from "ol/geom/Geometry";
 import { Point, LineString } from "ol/geom";
+import { transform } from "ol/proj";
+import * as turf from "@turf/turf";
 
 export class AzimuthTool extends BaseTool {
   constructor({
@@ -78,7 +80,7 @@ export class AzimuthTool extends BaseTool {
       if (this.Points.length == 3) {
         this.addAngleMark({
           coordinate: this.Points[1],
-          Angles: calculateAngle(this.Points),
+          Angles: calculateAngle({ points: this.Points, azimuth: true }),
         });
       }
     };
@@ -103,7 +105,7 @@ export class AzimuthTool extends BaseTool {
     const textStyle = new Style({
       text: new Text({
         text: "正北方向",
-        font: "14px Arial",
+        font: "16px Arial",
         fill: new Fill({
           color: "#000",
         }),
@@ -119,7 +121,7 @@ export class AzimuthTool extends BaseTool {
     });
 
     lineFeature.setStyle([this.lineStyle, textStyle]);
-    
+
     this.vectorLayer?.getSource().addFeature(lineFeature);
 
     //箭头
@@ -153,19 +155,20 @@ export class AzimuthTool extends BaseTool {
 
       const pointscount = geom.getCoordinates();
       if (pointscount.length >= 3) {
+        let Angles = calculateAngle({ points: this.Points, azimuth: true });
         this.addMarker({
           coordinate: coordinates[1],
-          symbolId: "B",
-          anchor: [0, 0],
+          symbolId: "icon-arrow",
+          anchor: [0.51, 0.5],
+          rotation: Angles.rotation,
         });
 
         this.Points[2] = coordinates[1];
         console.log(this.Points, coordinates);
         this.addAngleMark({
           coordinate: coordinates[0],
-          Angles: calculateAngle(this.Points),
+          Angles: Angles,
         });
-        this.formatPonit(coordinates[1]);
         this.draw.finishDrawing();
       }
     });
@@ -182,6 +185,17 @@ export class AzimuthTool extends BaseTool {
 
     this.helpTooltipElement.style.display = "none";
     this.map.un("pointermove", this.setHelpTooltip);
+
+    // const azimuthInDegrees = this.getAzimuth(
+    //   this.Points[1][0],
+    //   this.Points[1][1],
+    //   this.Points[2][0],
+    //   this.Points[2][1]
+    // ); // 将弧度转换为度数
+    const startP = transform(this.Points[1], "EPSG:3857", "EPSG:4326");
+    const endP = transform(this.Points[2], "EPSG:3857", "EPSG:4326");
+    const azimuthInDegrees = turf.rhumbBearing(startP,endP);
+    console.log("Azimuth (in degrees):", azimuthInDegrees);
     this.Points = [];
   }
 
@@ -204,7 +218,7 @@ export class AzimuthTool extends BaseTool {
     var markerStyle = new Style({
       image: new Icon({
         anchor: [0.5, 0.5],
-        src: createAngleSVG(Angles),
+        src: createAngleSVG({ Angle: Angles.Angle, rotate: 90 }),
         scale: 1,
         rotateWithView: true,
       }),

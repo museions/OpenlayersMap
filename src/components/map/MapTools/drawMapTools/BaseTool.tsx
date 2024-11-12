@@ -121,11 +121,13 @@ export class BaseTool {
     symbolId = "icon-symbol-one",
     color = "red",
     anchor = [0.5, 1],
+    rotation = 0,
   }: {
     coordinate: Coordinate;
     symbolId?: string;
     color?: string;
     anchor?: Array<number>;
+    rotation?: number;
   }) {
     const { uuid, vectorLayer } = this;
     let marker = new Feature({
@@ -138,7 +140,8 @@ export class BaseTool {
         anchor: anchor,
         src: getSVGForSrcById({ symbolId, color }),
         scale: 1,
-        rotateWithView: true
+        rotateWithView: true,
+        rotation: rotation,
       }),
     });
     marker.setStyle(markerStyle);

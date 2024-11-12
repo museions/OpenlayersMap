@@ -80,7 +80,7 @@ export class MeasureAngleTool extends BaseTool {
       if (this.Points.length == 3) {
         this.addAngleMark({
           coordinate: this.Points[1],
-          Angles: calculateAngle(this.Points),
+          Angles: calculateAngle({ points: this.Points }),
         });
       }
     };
@@ -127,7 +127,7 @@ export class MeasureAngleTool extends BaseTool {
         });
         this.addAngleMark({
           coordinate: coordinates[1],
-          Angles: calculateAngle(coordinates),
+          Angles: calculateAngle({ points: coordinates }),
         });
         this.formatPonit(coordinates[2]);
         this.draw.finishDrawing();

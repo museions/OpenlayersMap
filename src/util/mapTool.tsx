@@ -147,7 +147,13 @@ export const getStyleFunction = ({
   };
 };
 
-export const calculateAngle = (points: Coordinate[]) => {
+export const calculateAngle = ({
+  points,
+  azimuth = false,
+}: {
+  points: Coordinate[];
+  azimuth?: Boolean;
+}) => {
   // 提取坐标点 A, B, C
   const [A, B, C] = points;
 
@@ -176,7 +182,12 @@ export const calculateAngle = (points: Coordinate[]) => {
   const crossProduct = AB.x * BC.y - AB.y * BC.x;
 
   // 如果叉积为负
-  const angle = crossProduct < 0 ? angleInDegrees - 180 : 180 - angleInDegrees;
+  let angle = crossProduct < 0 ? angleInDegrees - 180 : 180 - angleInDegrees;
+
+  //计算的夹角是方位角
+  if (azimuth) {
+    angle = angle < 0 ? angle + 360 : angle;
+  }
 
   const { angleBA, angleBC } = calculateAnglePoint(points);
 
@@ -269,6 +280,7 @@ export const calculateAngle = (points: Coordinate[]) => {
   return {
     Angle: Number(Math.abs(angle.toFixed(0))),
     rotate: rotate,
+    rotation: (angle * Math.PI) / 180,
   };
 };
 
