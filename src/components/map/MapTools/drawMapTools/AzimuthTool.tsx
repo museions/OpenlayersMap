@@ -66,8 +66,8 @@ export class AzimuthTool extends BaseTool {
       const length = this.Points.length;
       if (length == 0) {
         helpMsg = "选择顶点A，左键单击确认";
-      } else if (length == 2) {
-        helpMsg = "移动鼠标，选择顶点B";
+      } else if (length >= 2) {
+        helpMsg = "移动鼠标，改变方位角大小,左键单击确认";
       }
       if (this.Points.length >= 2) {
         this.Points[2] = coordinate;
@@ -186,15 +186,9 @@ export class AzimuthTool extends BaseTool {
     this.helpTooltipElement.style.display = "none";
     this.map.un("pointermove", this.setHelpTooltip);
 
-    // const azimuthInDegrees = this.getAzimuth(
-    //   this.Points[1][0],
-    //   this.Points[1][1],
-    //   this.Points[2][0],
-    //   this.Points[2][1]
-    // ); // 将弧度转换为度数
     const startP = transform(this.Points[1], "EPSG:3857", "EPSG:4326");
     const endP = transform(this.Points[2], "EPSG:3857", "EPSG:4326");
-    const azimuthInDegrees = turf.rhumbBearing(startP,endP);
+    const azimuthInDegrees = turf.rhumbBearing(startP, endP);
     console.log("Azimuth (in degrees):", azimuthInDegrees);
     this.Points = [];
   }
