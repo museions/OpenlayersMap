@@ -15,7 +15,9 @@ const initEvent = () => {
     var lonLat = transform(evt.coordinate, "EPSG:3857", "EPSG:4326");
     if (lonLat && lonLat.length) {
       var lon = ((((lonLat[0] + 180) % 360) + 360) % 360) - 180;
-      coordinate.value = `${lon.toFixed(3)}, 纬度: ${lonLat[1].toFixed(3)}`;
+      coordinate.value = `经度：${lon.toFixed(3)}°, 纬度: ${lonLat[1].toFixed(
+        3
+      )}°`;
     }
   });
 };
@@ -27,7 +29,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="brp">经纬度：{{ coordinate }}</div>
+  <div class="brp">{{ coordinate }}</div>
 </template>
 
 <style scoped>

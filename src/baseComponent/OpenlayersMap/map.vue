@@ -31,6 +31,8 @@ import { EXTENT, ZOOM, CENTER } from "./const.map.tsx";
 
 const emit = defineEmits(["setMap"]);
 
+const loading = ref(true);
+
 const initMap = () => {
   const overviewMapControl = new OverviewMap({
     layers: [
@@ -62,6 +64,14 @@ const initMap = () => {
   map.addControl(new ZoomToExtent({ extent: EXTENT }));
 
   emit("setMap", map);
+
+  map.on("loadstart", () => {
+    loading.value = true;
+  });
+
+  map.on("loadend", () => {
+    loading.value = false;
+  });
 
   const printControl = new PrintDialog({
     lang: "zh",
@@ -114,7 +124,7 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div id="map"></div>
+  <div id="map" v-loading="loading"></div>
 </template>
 <style scoped>
 #map {
