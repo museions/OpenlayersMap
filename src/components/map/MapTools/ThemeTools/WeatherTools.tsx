@@ -5,12 +5,13 @@ import Snow from "ol-ext/particule/Snow";
 import RainDrop from "ol-ext/particule/RainDrop";
 import Rain from "ol-ext/particule/Rain";
 import { LAYER_NAMES } from "../../../../baseComponent/OpenlayersMap/layers";
+import BaseLayer from "ol/layer/Base";
 
 export class WeatherTools {
   map: Map;
   cloud: AnimatedCanvas;
-  AMAP_LAYER;
-  GOOGLE_LAYER;
+  AMAP_LAYER: BaseLayer | undefined;
+  GOOGLE_LAYER: BaseLayer | undefined;
   constructor({ map }: { map: Map }) {
     this.map = map;
     this.initWeatherMap();
@@ -26,8 +27,8 @@ export class WeatherTools {
       .getArray()
       .find((i) => i.getClassName() == LAYER_NAMES.GOOGLE_LAYER);
 
-    this.AMAP_LAYER.setVisible(false);
-    this.GOOGLE_LAYER.setVisible(true);
+    this.AMAP_LAYER?.setVisible(false);
+    this.GOOGLE_LAYER?.setVisible(true);
 
     // cloud
     this.cloud = new AnimatedCanvas({

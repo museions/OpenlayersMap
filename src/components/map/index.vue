@@ -52,5 +52,8 @@ const getMap = (map) => {
 
   <!-- 卡片内容 -->
   <card />
+
+  <!-- 大卡片 -->
+   <bigPanel />
 </template>
 <style scoped></style>

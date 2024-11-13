@@ -21,10 +21,12 @@ export const AMAP_URL =
 export const GOOGLE_URL =
   "http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}";
 
-export const AMAP_LAYER = new TileLayer({
-  source: new XYZ({ url: AMAP_URL, crossOrigin: "anonymous" }),
-  className: LAYER_NAMES.AMAP_LAYER,
-});
+export const AMAP_LAYER = (layerName: any) => {
+  return new TileLayer({
+    source: new XYZ({ url: AMAP_URL, crossOrigin: "anonymous" }),
+    className: layerName || LAYER_NAMES.AMAP_LAYER,
+  });
+};
 
 export const GOOGLE_LAYER = new TileLayer({
   source: new XYZ({ url: GOOGLE_URL, crossOrigin: "anonymous" }),

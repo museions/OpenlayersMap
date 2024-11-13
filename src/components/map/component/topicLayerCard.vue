@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref, toRaw } from "vue";
 import { storeToRefs } from "pinia";
-import { PANEL_MAP_TYPE } from "../../../const";
+import { PANEL_MAP_TYPE, THEMATIC_MAP_TYPES } from "../../../const";
 import { useTopicLayerStore, useMapStore, usePanelStore } from "../../../store";
 import {
   HeatMapTools,
@@ -36,19 +36,19 @@ const handleTools = (type) => {
   resetMap();
   const p = { map: toRaw(mapStore.map) };
   switch (type) {
-    case "cluster":
+    case THEMATIC_MAP_TYPES.CLUSTERL:
       toolMap = new ClusterTools(p);
       break;
-    case "heatMap":
+    case THEMATIC_MAP_TYPES.HEATMAP:
       toolMap = new HeatMapTools(p);
       break;
-    case "maskMap":
+    case THEMATIC_MAP_TYPES.MASK_MAP:
       toolMap = new MaskTools(p);
       break;
-    case "weatherMap":
+    case THEMATIC_MAP_TYPES.WEATHER_MAP:
       toolMap = new WeatherTools(p);
       break;
-    case "timeMap":
+    case THEMATIC_MAP_TYPES.TIME_MAP:
       toolMap = new TimeTools(p);
       break;
   }
@@ -61,37 +61,37 @@ const handleTools = (type) => {
 const MAP_THEMES = [
   {
     name: "聚合图层",
-    type: "cluster",
-    callback: () => handleTools("cluster"),
+    type: THEMATIC_MAP_TYPES.CLUSTERL,
+    callback: () => handleTools(THEMATIC_MAP_TYPES.CLUSTERL),
     src: clusterImage,
   },
   {
     name: "热力图",
-    type: "heatMap",
-    callback: () => handleTools("heatMap"),
+    type: THEMATIC_MAP_TYPES.HEATMAP,
+    callback: () => handleTools(THEMATIC_MAP_TYPES.HEATMAP),
     src: heatMapImage,
   },
   {
     name: "蒙版图层",
-    type: "maskMap",
-    callback: () => handleTools("maskMap"),
+    type: THEMATIC_MAP_TYPES.MASK_MAP,
+    callback: () => handleTools(THEMATIC_MAP_TYPES.MASK_MAP),
     src: maskImage,
   },
   {
     name: "气象专题",
-    type: "weatherMap",
-    callback: () => handleTools("weatherMap"),
+    type: THEMATIC_MAP_TYPES.WEATHER_MAP,
+    callback: () => handleTools(THEMATIC_MAP_TYPES.WEATHER_MAP),
     src: weatherImage,
   },
   {
     name: "时间专题",
-    type: "timeMap",
-    callback: () => handleTools("timeMap"),
+    type: THEMATIC_MAP_TYPES.TIME_MAP,
+    callback: () => handleTools(THEMATIC_MAP_TYPES.TIME_MAP),
     src: timeImage,
   },
   {
     name: "矢量图高亮",
-    type: "vectorHighlightMap",
+    type: THEMATIC_MAP_TYPES.HIGHLIGHT_VECTOR_MAP,
     callback: () => {
       panelStore.setBigPanelType(PANEL_MAP_TYPE.VECTOR_LAYER);
     },

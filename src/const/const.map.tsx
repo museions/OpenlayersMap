@@ -9,18 +9,24 @@ export const DRAW_TYPES = {
   MEASUREDISTANCE: "MEASUREDISTANCE",
   MEASUREANGLE: "MEASUREANGLE",
   MEASUREPOLYGON: "MEASUREPOLYGON",
-  AZIMUTH:"azimuth"
+  AZIMUTH: "azimuth",
 };
 
 export const TYPES = {
   ...DRAW_TYPES,
-  PATHPLAN: "PATHPLAN",
-  TOPICTYPES: "TOPICTYPES",
+  PATHPLAN: "PATHPLAN", //路径规划
+  TOPICTYPES: "TOPICTYPES", //专题图
 };
 
 //专题图类型
-export const TOPICTYPES = {
-  TOPICTYPES: "TOPICTYPES",
+export const THEMATIC_MAP_TYPES = {
+  NULL: "NULL",
+  CLUSTERL: "CLUSTER", //聚合图层
+  HEATMAP: "HEATMAP", //热力图
+  MASK_MAP: "MASKMAP", //遮罩
+  WEATHER_MAP: "WEATHER_MAP", //天气图
+  TIME_MAP: "TIME_MAP", //时间图
+  HIGHLIGHT_VECTOR_MAP: "HIGHLIGHT_VECTOR_MAP", //高亮矢量图
 };
 
 //卡片标题
@@ -84,6 +90,7 @@ export const INIT_CIRCLE_STATE = {
   opacity: 30,
 };
 
+//比例尺单位
 export const SCALEPLATE_LIST = [
   {
     t: "度",
@@ -106,3 +113,4 @@ export const SCALEPLATE_LIST = [
     v: "metric",
   },
 ];
+

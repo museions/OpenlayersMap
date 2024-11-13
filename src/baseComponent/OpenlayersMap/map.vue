@@ -31,7 +31,7 @@ import { EXTENT, ZOOM, CENTER } from "./const.map.tsx";
 
 const emit = defineEmits(["setMap"]);
 
-const loading = ref(true);
+const loading = ref(false);
 
 const initMap = () => {
   const overviewMapControl = new OverviewMap({
@@ -43,7 +43,7 @@ const initMap = () => {
   });
 
   const map = new Map({
-    layers: [AMAP_LAYER, GOOGLE_LAYER, VECTOR_LAYER],
+    layers: [AMAP_LAYER(), GOOGLE_LAYER, VECTOR_LAYER],
     target: "map",
     view: new View({
       center: olProj.fromLonLat(CENTER),
@@ -62,9 +62,9 @@ const initMap = () => {
   map.addControl(new ScaleLine());
 
   map.addControl(new ZoomToExtent({ extent: EXTENT }));
-
-  emit("setMap", map);
-
+  try {
+    emit("setMap", map);
+  } catch {}
   map.on("loadstart", () => {
     loading.value = true;
   });

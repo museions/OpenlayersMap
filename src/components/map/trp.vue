@@ -7,7 +7,7 @@ import {
   useTopicLayerStore,
   usePanelStore,
 } from "../../store";
-import { TYPES, TOPICTYPES, PANEL_TYPES, DRAW_TYPES } from "../../const";
+import { TYPES, PANEL_TYPES, DRAW_TYPES } from "../../const";
 
 const { map } = storeToRefs(useMapStore());
 

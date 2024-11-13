@@ -1,10 +1,13 @@
 <script setup>
+import { PANEL_MAP_TYPE } from "../../const";
 import { MODAL_SETTING } from "../../const/const.modals";
-import { useMapStore, useModalStore } from "../../store";
+import { useMapStore, useModalStore, usePanelStore } from "../../store";
 
 const mapStore = useMapStore();
 
 const modalStore = useModalStore();
+
+const panelStore = usePanelStore();
 
 const handleClear = () => {
   mapStore.mapTool.addListener("clear");
@@ -14,9 +17,35 @@ const handleClear = () => {
 const openSettingModal = () => {
   modalStore.setModalType(MODAL_SETTING);
 };
+
+const openBigPanel = () => {
+  panelStore.setBigPanelType(PANEL_MAP_TYPE.VECTOR_LAYER);
+};
 </script>
 <template>
   <ul class="Clear_clear__Zy0p7">
+    <li @click="openBigPanel">
+      <el-tooltip
+        class="box-item"
+        effect="dark"
+        content="地图操作"
+        placement="left"
+        :offset="20"
+      >
+        <span role="img" class="anticon">
+          <svg
+            width="1em"
+            height="1em"
+            fill="currentColor"
+            aria-hidden="true"
+            focusable="false"
+            class=""
+          >
+            <use xlink:href="#icon-operate"></use>
+          </svg>
+        </span>
+      </el-tooltip>
+    </li>
     <li @click="openSettingModal">
       <el-tooltip
         class="box-item"
