@@ -175,8 +175,8 @@ onMounted(() => {
     .getArray()
     .find((i) => i.getClassName() == LAYER_NAMES.VECTOR_LAYER);
   if (!vectorLayer) {
-    mapInstance.addLayer(VECTOR_LAYER);
-    vectorLayer = VECTOR_LAYER;
+    vectorLayer = VECTOR_LAYER();
+    mapInstance.addLayer(vectorLayer);
   }
 });
 

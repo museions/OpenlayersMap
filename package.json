@@ -12,6 +12,7 @@
     "@mapbox-controls/zoom": "^3.0.0",
     "@mapbox/mapbox-gl-language": "^1.0.1",
     "@turf/turf": "^7.1.0",
+    "@types/uuid": "^10.0.0",
     "element-plus": "^2.7.8",
     "file-saver": "^2.0.5",
     "jspdf": "^2.5.2",

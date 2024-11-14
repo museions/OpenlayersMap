@@ -43,7 +43,7 @@ const initMap = () => {
   });
 
   const map = new Map({
-    layers: [AMAP_LAYER(), GOOGLE_LAYER, VECTOR_LAYER],
+    layers: [AMAP_LAYER(), GOOGLE_LAYER, VECTOR_LAYER()],
     target: "map",
     view: new View({
       center: olProj.fromLonLat(CENTER),
@@ -65,6 +65,8 @@ const initMap = () => {
   try {
     emit("setMap", map);
   } catch {}
+
+  /** 
   map.on("loadstart", () => {
     loading.value = true;
   });
@@ -72,6 +74,7 @@ const initMap = () => {
   map.on("loadend", () => {
     loading.value = false;
   });
+  */
 
   const printControl = new PrintDialog({
     lang: "zh",

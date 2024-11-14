@@ -4,6 +4,7 @@ import { usePanelStore } from "../../../store";
 import { PANEL_MAP_TYPE, PANEL_MAP_LIST } from "../../../const";
 import vectorLayerHight from "./Panels/vectorLayerHight.vue";
 import animationMap from "./Panels/animationMap.vue";
+import analyseMap from "./Panels/analyseMap.vue";
 import { computed } from "vue";
 
 const panelStore = usePanelStore();
@@ -24,6 +25,8 @@ const MapComp = computed(() => {
       return vectorLayerHight;
     case PANEL_MAP_LIST[1].type:
       return animationMap;
+    case PANEL_MAP_LIST[2].type:
+      return analyseMap;
   }
 });
 </script>
@@ -78,7 +81,7 @@ const MapComp = computed(() => {
   position: absolute;
   left: 70px;
   top: 100px;
-  width: 800px;
+  width: 1200px;
   z-index: 5;
 }
 
