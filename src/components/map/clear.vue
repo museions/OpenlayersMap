@@ -1,5 +1,6 @@
 <script setup>
 import { PANEL_MAP_TYPE } from "../../const";
+import { LAYER_NAMES } from "../../baseComponent/OpenlayersMap/layers";
 import { MODAL_SETTING } from "../../const/const.modals";
 import { useMapStore, useModalStore, usePanelStore } from "../../store";
 
@@ -10,8 +11,17 @@ const modalStore = useModalStore();
 const panelStore = usePanelStore();
 
 const handleClear = () => {
-  mapStore.mapTool.addListener("clear");
-  mapStore.mapTool.mapEl?.classList.remove("draw");
+  const vectorLayer = mapStore.map
+    .getLayers()
+    .getArray()
+    .find((i) => i.getClassName() == LAYER_NAMES.VECTOR_LAYER);
+
+  if (vectorLayer) {
+    const features = vectorLayer.getSource().getFeatures();
+    for (let i = 0; i < features.length; i++) {
+      vectorLayer.getSource().removeFeature(features[i]);
+    }
+  }
 };
 
 const openSettingModal = () => {

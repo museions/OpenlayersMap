@@ -15,7 +15,7 @@ export const LAYER_NAMES = {
 
 /**矢量图地址 */
 export const AMAP_URL =
-  "https://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}"; //矢量图
+  "https://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7&x={x}&y={y}&z={z}"; //矢量图
 
 /**影像图地址 */
 export const GOOGLE_URL =
