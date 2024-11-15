@@ -1,11 +1,12 @@
 <script setup>
 import { ref, reactive, watch } from "vue";
 import { useRouter } from "vue-router";
+import { storeToRefs } from "pinia";
 import GithubIcon from "../baseComponent/GithubIcon.vue";
 import ModeChange from "../components/common/ModeChange.vue";
 import { navRoutes } from "../router";
 import { useMapStore } from "../store";
-import { storeToRefs } from "pinia";
+import ThemeSwitch from "../baseComponent/ThemeSwitch.vue";
 
 const mapStore = useMapStore();
 
@@ -75,6 +76,9 @@ mapStore.$onAction(({ name, after }) => {
             </svg>
           </span>
         </li>
+        <li>
+          <ThemeSwitch />
+        </li>
       </ul>
       <GithubIcon />
     </div>
@@ -117,6 +121,9 @@ li {
   opacity: 0.6;
   margin-right: 40px;
   font-weight: 700;
+  display: flex;
+  align-items: center;
+  
 }
 
 li:hover,

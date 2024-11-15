@@ -2,6 +2,7 @@ import * as sphere from "ol/sphere";
 import { Style, Stroke, Icon } from "ol/style";
 import { Geometry, Geometry, Point } from "ol/geom";
 import { Coordinate } from "ol/coordinate";
+import { Tile } from "ol";
 
 export const formatDistance = (dis: number) => {
   if (dis > 100) {
@@ -333,3 +334,24 @@ function calculateAnglePoint(points) {
     angleBC: angleBC, // BC 向量与 X 轴负半轴的夹角
   };
 }
+
+//暗色地图底图
+export const tileLoadFunction = (imageTile: Tile, src: string) => {
+  const img = new Image();
+  img.setAttribute("crossOrigin", "anonymous");
+  img.onload = function () {
+    const canvas = document.createElement("canvas");
+    const w = img.width;
+    const h = img.height;
+    canvas.width = w;
+    canvas.height = h;
+    const context = canvas.getContext("2d");
+    if (context) {
+      context.filter =
+        "grayscale(98%) invert(100%) sepia(20%) hue-rotate(180deg) saturate(1600%) brightness(80%) contrast(90%)";
+      context.drawImage(img, 0, 0, w, h, 0, 0, w, h);
+      imageTile.getImage().src = canvas.toDataURL("image/png");
+    }
+  };
+  img.src = src;
+};

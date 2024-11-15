@@ -4,6 +4,7 @@ import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import XYZ from "ol/source/XYZ";
 import { WATER_TEXT } from "./const.map";
+import { Tile } from "ol";
 
 export const LAYER_NAMES = {
   AMAP_LAYER: "AMAP_LAYER",
@@ -23,7 +24,10 @@ export const GOOGLE_URL =
 
 export const AMAP_LAYER = (layerName: string) => {
   return new TileLayer({
-    source: new XYZ({ url: AMAP_URL, crossOrigin: "anonymous" }),
+    source: new XYZ({
+      url: AMAP_URL,
+      crossOrigin: "anonymous",
+    }),
     className: layerName || LAYER_NAMES.AMAP_LAYER,
   });
 };
