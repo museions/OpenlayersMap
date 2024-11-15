@@ -1,6 +1,8 @@
 @import "node_modules/ol/ol.css";
 @import "node_modules/ol-ext/dist/ol-ext.css";
-
+:root{
+  --el-switch-on-color:"#fff" !important;
+}
 * {
   margin: 0;
   padding: 0;

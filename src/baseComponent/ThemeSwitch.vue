@@ -35,9 +35,24 @@ const changeThemeColor = (flag: boolean) => {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #000;
 }
+
+:deep(.el-switch.is-checked .el-switch__core .el-switch__action) {
+  background-color: #fff !important;
+}
+
 img {
   width: 20px;
   height: 20px;
+}
+
+:deep(.el-switch.is-checked .el-switch__core) {
+  background-color: #fff;
+  border-color: #6b6464c9;
+}
+
+:deep(.el-switch__core) {
+  background-color: #000;
 }
 </style>
