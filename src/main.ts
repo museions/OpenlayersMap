@@ -5,6 +5,8 @@ import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import "element-plus/dist/index.css";
 import router from "./router";
 import "./style.css";
+import "./styles/day.css";
+import './styles/night.css'
 import { drag } from "./directives/index.ts";
 import App from "./App.vue";
 

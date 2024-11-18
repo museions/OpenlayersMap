@@ -95,7 +95,7 @@ mapStore.$onAction(({ name, after }) => {
 .home {
   height: 100%;
   width: 100%;
-  background: #fff;
+  background: var(--primary-color);
 }
 
 .header {
@@ -123,7 +123,6 @@ li {
   font-weight: 700;
   display: flex;
   align-items: center;
-  
 }
 
 li:hover,
