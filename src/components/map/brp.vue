@@ -1,8 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted, nextTick, toRaw, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { transform } from "ol/proj";
 import { useMapStore } from "../../store";
+import { Coordinate } from "ol/coordinate";
 
 const mapStore = useMapStore();
 const { map } = storeToRefs(mapStore);
@@ -11,7 +12,7 @@ const coordinate = ref("");
 
 const initEvent = () => {
   const mapInstance = toRaw(map.value);
-  mapInstance.on("pointermove", (evt) => {
+  mapInstance.on("pointermove", (evt: { coordinate: Coordinate; }) => {
     var lonLat = transform(evt.coordinate, "EPSG:3857", "EPSG:4326");
     if (lonLat && lonLat.length) {
       var lon = ((((lonLat[0] + 180) % 360) + 360) % 360) - 180;

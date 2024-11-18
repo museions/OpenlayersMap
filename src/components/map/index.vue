@@ -1,5 +1,5 @@
-<script setup>
-import { ref, onMounted, toRaw } from "vue";
+<script setup lang="ts">
+import { toRaw } from "vue";
 import { storeToRefs } from "pinia";
 import tlp from "./compass.vue";
 import trp from "./trp.vue";

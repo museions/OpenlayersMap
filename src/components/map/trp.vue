@@ -1,5 +1,5 @@
-<script setup>
-import { ref, toRaw } from "vue";
+<script setup lang="ts">
+import { toRaw } from "vue";
 import { storeToRefs } from "pinia";
 import {
   useMapStore,
@@ -19,7 +19,7 @@ const panelStore = usePanelStore();
 
 const topicLayerStore = useTopicLayerStore();
 
-const handleClickOpIcon = (type) => {
+const handleClickOpIcon = (type: string) => {
   active.value = type;
   //路径规划
   if (type == TYPES.PATHPLAN) {

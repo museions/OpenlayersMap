@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted } from "vue";
 import Map from "ol/Map";
 import View from "ol/View";
@@ -10,8 +10,9 @@ import {
   ANIMATE_TYPES,
 } from "../../../../baseComponent/OpenlayersMap/const.map";
 import { easeOut, easeIn } from "ol/easing";
+import { Coordinate } from "ol/coordinate";
 
-let mapInstance;
+let mapInstance: Map;
 const initMap = () => {
   console.log(AMAP_LAYER);
   mapInstance = new Map({
@@ -23,7 +24,7 @@ const initMap = () => {
     }),
   });
 };
-const bounce = (t) => {
+const bounce = (t: number) => {
   // 弹跳动画
   let s = 7.5625;
   let p = 2.75;
@@ -46,7 +47,7 @@ const bounce = (t) => {
   }
   return l;
 };
-const handleBtnClick = (type) => {
+const handleBtnClick = (type: { value: any; coordinate: any; }) => {
   const { value, coordinate } = type;
   switch (value) {
     case ANIMATE_TYPES[0].value:
@@ -105,14 +106,14 @@ const handleBtnClick = (type) => {
   }
 };
 
-const flyTo = (location, done = () => {}) => {
+const flyTo = (location: Coordinate, done = () => {}) => {
   // 飞行动画
   let view = mapInstance.getView();
   let duration = 2000;
   let zoom = view.getZoom();
   let parts = 2;
   let called = false;
-  function callback(complete) {
+  function callback(complete: any) {
     --parts;
     if (called) {
       return;

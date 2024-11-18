@@ -22,7 +22,7 @@ export const AMAP_URL =
 export const GOOGLE_URL =
   "http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}";
 
-export const AMAP_LAYER = (layerName: string) => {
+export const AMAP_LAYER = (layerName?: string) => {
   return new TileLayer({
     source: new XYZ({
       url: AMAP_URL,

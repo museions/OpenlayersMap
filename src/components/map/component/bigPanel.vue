@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { usePanelStore } from "../../../store";
 import { PANEL_MAP_TYPE, PANEL_MAP_LIST } from "../../../const";
@@ -15,7 +15,7 @@ const hideCard = () => {
   panelStore.setBigPanelType(PANEL_MAP_TYPE.NULL);
 };
 
-const handleClickType = ({ type }) => {
+const handleClickType = ({ type }: { type: string }) => {
   bigPanelType.value = type;
 };
 

@@ -15,6 +15,7 @@ import {
   MeasureAreaTool,
   MeasureAngleTool,
   AzimuthTool,
+  BaseTool,
 } from "../components/map/MapTools";
 import { Type } from "ol/geom/Geometry";
 
@@ -66,6 +67,8 @@ export const useCardStore = defineStore("cardStore", {
         case DRAW_TYPES.AZIMUTH:
           this.drawTool = new AzimuthTool(p);
           break;
+        default:
+          this.drawTool =new BaseTool(p);  
       }
 
       this.drawTool.init();

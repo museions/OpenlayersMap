@@ -1,17 +1,13 @@
-<script setup>
-import { ref, onMounted, nextTick, toRaw } from "vue";
+<script setup lang="ts">
+import { ref, onMounted, nextTick } from "vue";
 import Map from "ol/Map";
 import View from "ol/View";
 import * as olProj from "ol/proj";
-import VectorLayer from "ol/layer/Vector";
 import OSM from "ol/source/OSM.js";
 import TileLayer from "ol/layer/Tile";
-import XYZ from "ol/source/XYZ";
-import VectorSource from "ol/source/Vector";
 import {
   ZoomSlider,
   FullScreen,
-  defaults as defaultControls,
   ScaleLine,
   ZoomToExtent,
   OverviewMap,
@@ -22,8 +18,6 @@ import { saveAs } from "file-saver";
 import { v4 as uuidv4 } from "uuid";
 import {
   VECTOR_LAYER,
-  AMAP_URL,
-  LAYER_NAMES,
   AMAP_LAYER,
   GOOGLE_LAYER,
 } from "./layers.tsx";

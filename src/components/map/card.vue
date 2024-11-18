@@ -1,5 +1,5 @@
-<script setup>
-import { ref, reactive, watch, computed } from "vue";
+<script setup lang="ts">
+import { ref, computed } from "vue";
 import { storeToRefs } from "pinia";
 import { useCardStore, useMapStore } from "../../store";
 import { CARD_TITLE } from "../../const/const.map";
@@ -13,7 +13,7 @@ const cardstore = useCardStore();
 
 const { setShowUuid, getItem, removeItem } = cardstore;
 
-const { showUuid, drawType } = storeToRefs(cardstore);
+const { showUuid } = storeToRefs(cardstore);
 
 const MapStore = useMapStore();
 
@@ -21,7 +21,7 @@ let form = ref({ name: "", type: "" });
 
 const state = ref("");
 
-cardstore.$onAction(({ name, store, after }) => {
+cardstore.$onAction(({ name, after }) => {
   if (name == "addData") {
     after((p) => {
       const { operate } = p;
@@ -40,10 +40,10 @@ const handleDelete = () => {
     MapStore.map.removeOverlay(targetOverlay);
   }
   if (targetMarker) {
-    MapStore.mapTool.layers.vectorLayer.getSource().removeFeature(targetMarker);
+    cardstore.drawTool.vectorLayer.getSource().removeFeature(targetMarker);
   }
   if (feature) {
-    MapStore.mapTool.layers.vectorLayer.getSource().removeFeature(feature);
+    cardstore.drawTool.vectorLayer.getSource().removeFeature(feature);
   }
   removeItem({ uuid: showUuid.value });
   setShowUuid("");

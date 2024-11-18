@@ -1,5 +1,5 @@
-<script setup>
-import { onMounted, ref, toRaw } from "vue";
+<script setup lang="ts">
+import { ref, toRaw } from "vue";
 import { storeToRefs } from "pinia";
 import { PANEL_MAP_TYPE, THEMATIC_MAP_TYPES } from "../../../const";
 import { useTopicLayerStore, useMapStore, usePanelStore } from "../../../store";
@@ -16,7 +16,6 @@ import maskImage from "../assets/mask.jpg";
 import weatherImage from "../assets/weather.jpg";
 import vectorImage from "../assets/vector.png";
 import timeImage from "../assets/time.jpg";
-import setting from "./setting.vue";
 
 const mapStore = useMapStore();
 const topicStore = useTopicLayerStore();
@@ -32,7 +31,7 @@ const hideCard = () => {
   topicStore.setVisible(false);
 };
 
-const handleTools = (type) => {
+const handleTools = (type: string) => {
   resetMap();
   const p = { map: toRaw(mapStore.map) };
   switch (type) {

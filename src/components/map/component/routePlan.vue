@@ -1,9 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import { ref, toRaw, onMounted, computed } from "vue";
 import { storeToRefs } from "pinia";
 import { Draw } from "ol/interaction";
 import Feature from "ol/Feature";
-import { LineString, Point } from "ol/geom";
+import { LineString } from "ol/geom";
 import Overlay from "ol/Overlay";
 import { Style, Icon, Stroke, Fill, Circle } from "ol/style";
 import selectPointImg from "../assets/pointIng.png";
@@ -17,12 +17,13 @@ import {
   VECTOR_LAYER,
   LAYER_NAMES,
 } from "../../../baseComponent/OpenlayersMap/layers";
+import BaseLayer from "ol/layer/Base";
 
 const panelStore = usePanelStore();
 
 const mapStore = useMapStore();
 
-let vectorLayer;
+let vectorLayer:BaseLayer;
 
 const PointFeature = ref({
   start_point: null,
@@ -50,12 +51,12 @@ const listChildren = [
   { name: "终点", value: "end_point" },
 ];
 
-const changeActiveIndex = (index) => {
+const changeActiveIndex = (index: string) => {
   activeIndex.value = index;
   drawStart();
 };
 
-const getEndpointStyle = (endType) => {
+const getEndpointStyle = (endType: string) => {
   return new Style({
     image: new Icon({
       anchor: [0.5, 1],
@@ -94,7 +95,7 @@ const getPointsStyle = () => {
   });
 };
 
-let draw = null;
+let draw: Draw | null = null;
 
 const exitDraw = () => {
   if (draw) {
@@ -145,7 +146,7 @@ const drawStart = () => {
   });
 };
 
-const createElement = (index) => {
+const createElement = (index: string) => {
   var element = document.createElement("div");
   element.className = `popMarker_path_route_points`;
   element.id = `popMarker_path_route_points_${index}`;
@@ -153,7 +154,7 @@ const createElement = (index) => {
   return element;
 };
 
-let overlays = [];
+let overlays: Overlay[] = [];
 const popup = ref();
 
 const addOverlay = ({ coordinates, index, type = "point" }) => {
@@ -173,7 +174,7 @@ onMounted(() => {
   vectorLayer = mapInstance
     .getLayers()
     .getArray()
-    .find((i) => i.getClassName() == LAYER_NAMES.VECTOR_LAYER);
+    .find((i: { getClassName: () => string; }) => i.getClassName() == LAYER_NAMES.VECTOR_LAYER);
   if (!vectorLayer) {
     vectorLayer = VECTOR_LAYER();
     mapInstance.addLayer(vectorLayer);
@@ -208,7 +209,7 @@ const drawLine = () => {
     color: "#25C2F2",
     width: 4,
     imgsrc: rightImg,
-    wrapperRotation: (r) => -r,
+    wrapperRotation: (r: number) => -r,
   });
 
   lineFeature.setStyle(lineStyle);

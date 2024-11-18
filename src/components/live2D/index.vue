@@ -42,7 +42,7 @@
         :key="index"
         :class="tool.className"
         :src="tool.svg"
-        @click="tool.click"
+        @click="() => tool.click()"
       />
     </div>
     <div
@@ -58,7 +58,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted, nextTick, ref, computed } from "vue";
 import commentsrc from "./imgs/comment.svg";
 import usersrc from "./imgs/user.svg";
@@ -67,7 +67,7 @@ import infosrc from "./imgs/info.svg";
 import camerasrc from "./imgs/camera.svg";
 import streetsrc from "./imgs/street.svg";
 
-import tips from "./options/tips";
+import * as tips from "./options/tips";
 
 // const model = ["Potion-Maker/Pio", "school-2017-costume-yellow"];
 const model = ["ShizukuTalk/shizuku-48", "default"];
@@ -78,7 +78,7 @@ let [modelPath, modelTexturesId] = model;
 
 const customId = "vue-live2d-main";
 
-let messageTimer = null;
+let messageTimer: number | null = null;
 
 const data = ref({
   containerDisplay: {
@@ -91,15 +91,8 @@ const data = ref({
   modelTexturesId: modelTexturesId,
 });
 
-const changeLive2dSize = () => {
-  document.querySelector(
-    `#${customId}`
-  ).outerHTML = `<canvas id=${customId} width="300" height="300" class="vue-live2d-main"></canvas>`;
-  loadModel();
-};
-
 const loadModel = () => {
-  window.loadlive2d(
+  window?.loadlive2d(
     customId,
     `${apiPath}/${modelPath}/${data.value.modelTexturesId}.json`
   );
@@ -111,7 +104,7 @@ const loadModel = () => {
 const loadRandModel = () => {
   http({
     url: `${apiPath}/models.json`,
-    success: (data) => {
+    success: (data: any[]) => {
       const models = data.filter(({ modelPath: i }) => i !== modelPath);
       const { modelPath: j, modelIntroduce } =
         models[Math.floor(Math.random() * models.length)];
@@ -125,9 +118,10 @@ const loadRandModel = () => {
 const loadRandTextures = (isAfterRandModel = false) => {
   http({
     url: `${apiPath}/${modelPath}/textures.json`,
-    success: (resp) => {
+    success: (resp: any[]) => {
       const modelTexturesIds = resp.filter(
-        (modelTexturesId) => modelTexturesId !== data.value.modelTexturesId
+        (modelTexturesId: string) =>
+          modelTexturesId !== data.value.modelTexturesId
       );
       data.value.modelTexturesId =
         modelTexturesIds[Math.floor(Math.random() * modelTexturesIds.length)];
@@ -155,14 +149,26 @@ const showMessage = (msg = "", timeout = 6000) => {
 
 const takePhoto = () => {
   showMessage("照好了嘛，留个纪念吖~");
-  window.Live2D.captureName = "photo.png";
-  window.Live2D.captureFrame = true;
+  if (window.Live2D) {
+    window.Live2D.captureName = "photo.png";
+    window.Live2D.captureFrame = true;
+  }
 };
 
 const showHitokoto = () => {
   http({
     url: "https://v1.hitokoto.cn",
-    success: ({ hitokoto, id, creator, from }) => {
+    success: ({
+      hitokoto,
+      id,
+      creator,
+      from,
+    }: {
+      hitokoto: string;
+      id: string;
+      creator: string;
+      from: string;
+    }) => {
       showMessage(
         `${hitokoto} <br> - by <a href="https://hitokoto.cn?id=${id}">${creator}</a> from 《${from} 》`
       );
@@ -199,7 +205,7 @@ const loadEvent = () => {
     }
   }
 };
-const http = ({ url, success }) => {
+const http = ({ url, success }: { url: string; success: Function }) => {
   const xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4) {

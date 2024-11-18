@@ -1,12 +1,13 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { Map, View } from "ol";
+import { Feature, Map, View } from "ol";
 import { Style, Fill, Stroke, Text } from "ol/style";
 import LayerVector from "ol/layer/Vector";
 import SourceVector from "ol/source/Vector";
 import lands from "../../../../assets/lands.json";
 import GeoJSON from "ol/format/GeoJSON";
 import { fromLonLat } from "ol/proj";
+import { Geometry } from "ol/geom";
 
 const highlightStyle = new Style({
   stroke: new Stroke({
@@ -34,9 +35,9 @@ const map = ref(null);
 
 const highlight = ref(null);
 
-let featureOverlay = null;
+let featureOverlay: LayerVector<SourceVector<Feature<Geometry>>, Feature<Geometry>> | null = null;
 
-const displayFeatureInfo = (pixel) => {
+const displayFeatureInfo = (pixel: any) => {
   // 创建高亮图层
   if (!featureOverlay) {
     featureOverlay = new LayerVector({

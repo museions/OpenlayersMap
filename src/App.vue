@@ -1,7 +1,7 @@
-<script setup>
+<script setup lang="ts">
 import home from "./view/home.vue";
 import IndexModal from "./components/Modals/index.vue";
-import live from "./components/live2D/Live2D.vue";
+import live from "./components/live2D/index.vue";
 </script>
 
 <template>

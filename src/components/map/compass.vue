@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import { storeToRefs } from "pinia";
 import { easeOut } from "ol/easing";
@@ -20,7 +20,7 @@ const handleRecovery = () => {
   handleRotate();
 };
 
-const handleRotate = (type) => {
+const handleRotate = (type: string | undefined) => {
   const view = MapInstance.value.getView();
   var rotation = 0;
   if (type == "right") {

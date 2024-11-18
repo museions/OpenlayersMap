@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { PANEL_MAP_TYPE } from "../../const";
 import { LAYER_NAMES } from "../../baseComponent/OpenlayersMap/layers";
 import { MODAL_SETTING } from "../../const/const.modals";
@@ -14,7 +14,7 @@ const handleClear = () => {
   const vectorLayer = mapStore.map
     .getLayers()
     .getArray()
-    .find((i) => i.getClassName() == LAYER_NAMES.VECTOR_LAYER);
+    .find((i: { getClassName: () => string; }) => i.getClassName() == LAYER_NAMES.VECTOR_LAYER);
 
   if (vectorLayer) {
     const features = vectorLayer.getSource().getFeatures();

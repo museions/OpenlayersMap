@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { Draw } from "ol/interaction";
 import { useMapStore } from "../../../store";
