@@ -19,13 +19,27 @@ import {
 } from "../components/map/MapTools";
 import { Type } from "ol/geom/Geometry";
 
+type ListItem = {
+  uuid: string;
+};
+
+interface CardStoreDataStruct {
+  helpMsg: string;
+  list: Array<ListItem>;
+  showUuid: string;
+  active: string;
+  drawTool: BaseTool | object;
+  drawToolType: Type | string;
+}
+
 export const defaultState = {
   type: "",
   uuid: "",
   formData: {},
 };
+
 export const useCardStore = defineStore("cardStore", {
-  state: () => {
+  state: (): CardStoreDataStruct => {
     return {
       helpMsg: "",
       list: [],
@@ -40,7 +54,7 @@ export const useCardStore = defineStore("cardStore", {
       this.drawToolType = drawType;
       let uuid = uuidv4().replace(/-/g, "");
 
-      const cb = (data: { type: Type }) => {
+      const cb = (data: { type: Type; uuid: string }) => {
         this.addData({ ...data, type: drawType });
       };
 
@@ -68,15 +82,15 @@ export const useCardStore = defineStore("cardStore", {
           this.drawTool = new AzimuthTool(p);
           break;
         default:
-          this.drawTool =new BaseTool(p);  
+          this.drawTool = new BaseTool(p);
       }
 
-      this.drawTool.init();
+      this.drawTool?.init();
     },
     setActive(type: string) {
       this.active = type;
     },
-    addData(data: { type: Type }) {
+    addData(data: { type: Type; uuid: string }) {
       const { type } = data;
       let p = { ...defaultState, ...data };
       switch (type) {
@@ -111,7 +125,7 @@ export const useCardStore = defineStore("cardStore", {
         (i: { uuid: string }) => i.uuid == this.showUuid
       )[0];
     },
-    removeItem(item: Object) {
+    removeItem(item: { uuid: string }) {
       this.list = this.list.filter((i) => i.uuid != item.uuid);
     },
   },
