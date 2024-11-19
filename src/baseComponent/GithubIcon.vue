@@ -12,8 +12,8 @@ a.icss-github-corner-left {
   top: 0;
   right: 0;
   z-index: 1000;
-  color: #fff;
-  background-color: #333;
+  color: var(--primary-color);
+  background-color: var(--primary-text-color);
   padding: 0.5em 1.8em 0;
   text-align: center;
   -webkit-transform: rotate(45deg);
@@ -45,7 +45,7 @@ a.icss-github-corner-left:hover i {
 a.icss-github-corner i,
 a.icss-github-corner-left i,
 i.icss-github-corner {
-  color: #fff;
+  color:var(--primary-color);
   position: relative;
   display: inline-block;
   font-style: normal;

@@ -104,7 +104,7 @@ mapStore.$onAction(({ name, after }) => {
   align-items: center;
   justify-content: end;
   padding: 0 50px 0 20px;
-  background-color: #fff;
+  background-color: var(--primary-color, #fff);
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.08);
 }
 
@@ -117,7 +117,7 @@ li {
   cursor: pointer;
   font-size: 16px;
   margin: 0 10px;
-  color: #333;
+  color:var(--primary-text-color);
   opacity: 0.6;
   margin-right: 40px;
   font-weight: 700;

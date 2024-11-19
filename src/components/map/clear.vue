@@ -14,7 +14,10 @@ const handleClear = () => {
   const vectorLayer = mapStore.map
     .getLayers()
     .getArray()
-    .find((i: { getClassName: () => string; }) => i.getClassName() == LAYER_NAMES.VECTOR_LAYER);
+    .find(
+      (i: { getClassName: () => string }) =>
+        i.getClassName() == LAYER_NAMES.VECTOR_LAYER
+    );
 
   if (vectorLayer) {
     const features = vectorLayer.getSource().getFeatures();
@@ -46,7 +49,6 @@ const openBigPanel = () => {
           <svg
             width="1em"
             height="1em"
-            fill="currentColor"
             aria-hidden="true"
             focusable="false"
             class=""
@@ -68,7 +70,6 @@ const openBigPanel = () => {
           <svg
             width="1em"
             height="1em"
-            fill="currentColor"
             aria-hidden="true"
             focusable="false"
             class=""
@@ -90,7 +91,6 @@ const openBigPanel = () => {
           <svg
             width="1em"
             height="1em"
-            fill="currentColor"
             aria-hidden="true"
             focusable="false"
             class=""
@@ -104,7 +104,7 @@ const openBigPanel = () => {
 </template>
 <style scoped>
 ul {
-  background-color: #fff;
+  background-color: var(--primary-color);
   border-radius: 2px;
   box-shadow: 0 0 4px 2px #b1b1b180;
   position: absolute;
@@ -124,11 +124,15 @@ li {
   cursor: pointer;
 }
 
+li svg {
+  fill: var(--primary-svg-color);
+}
+
 li:hover {
-  background-color: #f2f2f2;
+  background-color: var(--primary-svg-hover-color);
 }
 
 ul > li:not(:last-child) {
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid var(--primary-li-bottom-color);
 }
 </style>

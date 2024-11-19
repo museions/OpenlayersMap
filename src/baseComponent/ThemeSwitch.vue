@@ -15,7 +15,9 @@ const colorFlag = computed(() => {
 });
 
 const changeThemeColor = (flag: boolean) => {
-  commonStore.setThemeColor(flag ? THEME_COLOR.DAY : THEME_COLOR.NIGHT);
+  const theme = flag ? THEME_COLOR.DAY : THEME_COLOR.NIGHT;
+  commonStore.setThemeColor(theme);
+  document.documentElement.setAttribute("data-theme", theme);
 };
 </script>
 <template>

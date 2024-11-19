@@ -83,7 +83,6 @@ const List = [
           <svg
             width="1em"
             height="1em"
-            fill="#262626"
             aria-hidden="true"
             focusable="false"
             class=""
@@ -106,7 +105,7 @@ ul {
 }
 
 li {
-  background-color: #fff;
+  background-color: var(--primary-color);
   font-size: 22px;
   height: 35px;
   transition: all 0.3s;
@@ -116,8 +115,11 @@ li {
   justify-content: center;
 }
 
+li svg {
+  fill: var(--primary-svg-color);
+}
 ul > li:not(:last-child) {
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid var(--primary-li-bottom-color);
 }
 
 .Draw_draw__UPVhb > li:first-child,
@@ -149,7 +151,7 @@ ul > li:not(:last-child) {
 }
 
 li:hover {
-  background-color: #f2f2f2;
+  background-color: var(--primary-svg-hover-color);
   cursor: pointer;
 }
 
