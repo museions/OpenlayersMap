@@ -3,9 +3,9 @@ import { reactive, watch, onMounted, computed, toRaw } from "vue";
 import { storeToRefs } from "pinia";
 import { Style, Icon } from "ol/style";
 import Overlay from "ol/Overlay";
-import { useCardStore, useMapStore } from "../../../store";
+import { useCardStore, useMapStore } from "../../../store/index.ts";
 import locImgSrc from "../../../assets/loc.png";
-import { getSVGForSrcById } from "../../../util";
+import { getSVGForSrcById } from "../../../util/index";
 
 const cardstore = useCardStore();
 const { setItem, getItem: getMarkerData } = cardstore;

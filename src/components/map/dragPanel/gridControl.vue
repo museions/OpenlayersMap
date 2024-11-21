@@ -2,7 +2,7 @@
 import { toRaw } from "vue";
 import { storeToRefs } from "pinia";
 import { Graticule } from "ol/layer";
-import { useMapStore } from "../../../store";
+import { useMapStore } from "../../../store/index";
 import {
   GRID_LAYER,
   LAYER_NAMES,

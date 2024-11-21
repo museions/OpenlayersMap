@@ -12,21 +12,19 @@ import routePlan from "./component/routePlan.vue";
 import "./style.css";
 import {
   useMapStore,
-  useCardStore,
   usePanelStore,
   useCommonStore,
-} from "../../store";
-import { PANEL_TYPES } from "../../const/const.panel.tsx";
+} from "../../store/index.ts";
+import { PANEL_TYPES } from "../../const/const.panel.ts";
 import bigPanel from "./component/bigPanel.vue";
 import OpenlayersMap from "../../baseComponent/OpenlayersMap/map.vue";
 import {
   AMAP_LAYER,
   LAYER_NAMES,
-} from "../../baseComponent/OpenlayersMap/layers.tsx";
-import { THEME_COLOR } from "../../const/const.common.tsx";
-import { tileLoadFunction } from "../../util/mapTool.tsx";
+} from "../../baseComponent/OpenlayersMap/layers.ts";
+import { THEME_COLOR } from "../../const/const.common.ts";
+import { tileLoadFunction } from "../../util/mapTool.ts";
 
-const cardStore = useCardStore();
 const MapStore = useMapStore();
 const PanelStore = usePanelStore();
 const commonStore = useCommonStore();

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { PANEL_MAP_TYPE } from "../../const";
-import { LAYER_NAMES } from "../../baseComponent/OpenlayersMap/layers";
-import { MODAL_SETTING } from "../../const/const.modals";
-import { useMapStore, useModalStore, usePanelStore } from "../../store";
+import { PANEL_MAP_TYPE } from "../../const/index.ts";
+import { LAYER_NAMES } from "../../baseComponent/OpenlayersMap/layers.ts";
+import { MODAL_SETTING } from "../../const/const.modals.ts";
+import { useMapStore, useModalStore, usePanelStore } from "../../store/index";
 
 const mapStore = useMapStore();
 

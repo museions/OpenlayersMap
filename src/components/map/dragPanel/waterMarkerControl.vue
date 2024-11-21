@@ -1,7 +1,7 @@
 <script setup>
 import { toRaw } from "vue";
 import { storeToRefs } from "pinia";
-import { useMapStore } from "../../../store";
+import { useMapStore } from "../../../store/index";
 import {
   LAYER_NAMES,
   WATER_LAYER,

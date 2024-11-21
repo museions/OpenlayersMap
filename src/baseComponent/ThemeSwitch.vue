@@ -2,9 +2,9 @@
 import { computed } from "vue";
 import dayImg from "../assets/day.svg";
 import nightImg from "../assets/night.svg";
-import { useCommonStore } from "../store";
+import { useCommonStore } from "../store/index.ts";
 import { storeToRefs } from "pinia";
-import { THEME_COLOR } from "../const";
+import { THEME_COLOR } from "../const/index.ts";
 
 const commonStore = useCommonStore();
 

@@ -7,12 +7,12 @@ import { v4 as uuidv4 } from "uuid";
 import {
   AMAP_LAYER,
   VECTOR_LAYER,
-} from "../../../../baseComponent/OpenlayersMap/layers";
+} from "../../../../baseComponent/OpenlayersMap/layers.ts";
 import {
   CENTER,
   ZOOM,
-} from "../../../../baseComponent/OpenlayersMap/const.map";
-import { SPATIAL_ANALYSIS_TYPES } from "../../../../const";
+} from "../../../../baseComponent/OpenlayersMap/const.map.ts";
+import { SPATIAL_ANALYSIS_TYPES } from "../../../../const/index.ts";
 import addCircleImg from "../../assets/画圆.svg";
 import unionImg from "../../assets/并集.svg";
 import intersectionImg from "../../assets/交集.svg";

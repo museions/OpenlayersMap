@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, toRaw } from "vue";
 import { storeToRefs } from "pinia";
-import { PANEL_MAP_TYPE, THEMATIC_MAP_TYPES } from "../../../const";
+import { PANEL_MAP_TYPE, THEMATIC_MAP_TYPES } from "../../../const/index";
 import { useTopicLayerStore, useMapStore, usePanelStore } from "../../../store";
 import {
   HeatMapTools,
@@ -9,7 +9,7 @@ import {
   MaskTools,
   TimeTools,
   WeatherTools,
-} from "../MapTools/ThemeTools";
+} from "../MapTools/ThemeTools/index";
 import clusterImage from "../assets/cluster.png";
 import heatMapImage from "../assets/heatMap.jpg";
 import maskImage from "../assets/mask.jpg";
@@ -24,7 +24,7 @@ const panelStore = usePanelStore();
 
 const { visible } = storeToRefs(topicStore);
 
-let toolMap = null;
+let toolMap: ClusterTools | HeatMapTools | MaskTools | WeatherTools | TimeTools | null = null;
 
 const hideCard = () => {
   resetMap();

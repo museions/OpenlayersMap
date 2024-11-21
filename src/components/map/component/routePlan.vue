@@ -8,7 +8,7 @@ import Overlay from "ol/Overlay";
 import { Style, Icon, Stroke, Fill, Circle } from "ol/style";
 import selectPointImg from "../assets/pointIng.png";
 import { useMapStore, usePanelStore } from "../../../store";
-import { PANEL_TYPES } from "../../../const";
+import { PANEL_TYPES } from "../../../const/index.ts";
 import endImg from "../assets/end.svg";
 import startImg from "../assets/start.svg";
 import rightImg from "../../../assets/right.png";
@@ -16,7 +16,7 @@ import { getStyleFunction } from "../../../util";
 import {
   VECTOR_LAYER,
   LAYER_NAMES,
-} from "../../../baseComponent/OpenlayersMap/layers";
+} from "../../../baseComponent/OpenlayersMap/layers.ts";
 import BaseLayer from "ol/layer/Base";
 
 const panelStore = usePanelStore();

@@ -3,12 +3,12 @@ import { onMounted } from "vue";
 import Map from "ol/Map";
 import View from "ol/View";
 import * as olProj from "ol/proj";
-import { AMAP_LAYER } from "../../../../baseComponent/OpenlayersMap/layers";
+import { AMAP_LAYER } from "../../../../baseComponent/OpenlayersMap/layers.ts";
 import {
   CENTER,
   ZOOM,
   ANIMATE_TYPES,
-} from "../../../../baseComponent/OpenlayersMap/const.map";
+} from "../../../../baseComponent/OpenlayersMap/const.map.ts";
 import { easeOut, easeIn } from "ol/easing";
 import { Coordinate } from "ol/coordinate";
 

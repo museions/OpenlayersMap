@@ -5,6 +5,9 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
   plugins: [vue()],
   base: "./",
+  // resolve:{
+  //   extensions:['.ts','.vue','.tsx']
+  // },
   build:{
     outDir:'../map_pages'
   }

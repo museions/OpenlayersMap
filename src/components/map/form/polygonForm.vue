@@ -3,12 +3,12 @@ import { reactive, onMounted, computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { Style, Icon, Stroke, Fill } from "ol/style";
 import Overlay from 'ol/Overlay';
-import { useCardStore, useMapStore } from '../../../store/index.tsx';
+import { useCardStore, useMapStore } from '../../../store/index.ts';
 import locImgSrc from "../../../assets/loc.png";
 import polygon3 from "../../../assets/polygon3.png";
 import polygon4 from "../../../assets/polygon4.png";
 import polygon5 from "../../../assets/polygon5.png";
-import { getSVGForSrcById, convertToRGBA, getImagePattern } from "../../../util/index";
+import { getSVGForSrcById, convertToRGBA, getImagePattern } from "../../../util/index.ts";
 import Slider from '../../../baseComponent/Slider.vue';
 
 const imgsObject = {

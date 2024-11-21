@@ -20,8 +20,8 @@ import {
   VECTOR_LAYER,
   AMAP_LAYER,
   GOOGLE_LAYER,
-} from "./layers.tsx";
-import { EXTENT, ZOOM, CENTER } from "./const.map.tsx";
+} from "./layers.ts";
+import { EXTENT, ZOOM, CENTER } from "./const.map.ts";
 
 const emit = defineEmits(["setMap"]);
 

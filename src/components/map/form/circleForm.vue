@@ -3,10 +3,10 @@ import { reactive, watch, onMounted, computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { Style, Icon, Stroke, Fill } from "ol/style";
 import Overlay from 'ol/Overlay'
-import { useCardStore, useMapStore } from '../../../store/index.tsx';
+import { useCardStore, useMapStore } from '../../../store/index.ts';
 import locImgSrc from "../../../assets/loc.png";
 import Slider from '../../../baseComponent/Slider.vue';
-import { getSVGForSrcById, convertToRGBA, getImagePattern } from "../../../util/index";
+import { getSVGForSrcById, convertToRGBA, getImagePattern } from "../../../util/index.ts";
 
 const cardstore = useCardStore()
 const { setItem, getItem: getMarkerData } = cardstore

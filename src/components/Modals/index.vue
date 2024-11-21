@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { storeToRefs } from "pinia";
-import { MODAL_SETTING } from "../../const/const.modals";
+import { MODAL_SETTING } from "../../const/const.modals.ts";
 import setting from "./setting.vue";
-import { useModalStore } from "../../store";
+import { useModalStore } from "../../store/index.ts";
 
 const store = useModalStore();
 

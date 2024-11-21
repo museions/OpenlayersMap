@@ -4,11 +4,11 @@ import { storeToRefs } from "pinia";
 import { Style, Icon, Stroke, Fill } from "ol/style";
 import { Point } from "ol/geom";
 import Overlay from "ol/Overlay";
-import { useCardStore, useMapStore } from "../../../store/index.tsx";
+import { useCardStore, useMapStore } from "../../../store/index.ts";
 import locImgSrc from "../../../assets/loc.png";
 import rightImg from "../../../assets/right.png";
-import { getSVGForSrcById, getStyleFunction } from "../../../util";
-import { LINE_FORM_LINE_STYLES } from "../../../const/const.map";
+import { getSVGForSrcById, getStyleFunction } from "../../../util/index.ts";
+import { LINE_FORM_LINE_STYLES } from "../../../const/const.map.ts";
 import Slider from "../../../baseComponent/Slider.vue";
 
 const cardstore = useCardStore();
