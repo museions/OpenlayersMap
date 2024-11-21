@@ -42,30 +42,61 @@ export const CARD_TITLE = {
 export const LINE_FORM_LINE_STYLES = [
   {
     value: "line_1",
+    position: [-0, -3],
+    height: 4,
+    color: "#f00",
+    width: 2,
   },
   {
     value: "line_2",
+    position: [-0, -15],
+    height: 4,
+    color: "#f00",
+    with: 2,
   },
   {
     value: "line_3",
+    position: [-0, -24],
+    height: 8,
+    color: "#25C2F2",
+    width: 8,
   },
   {
     value: "line_4",
+    position: [-0, -36],
+    height: 8,
+    color: "#555",
+    width: 4,
   },
   {
     value: "line_5",
+    position: [-0, -48],
+    height: 8,
+    color: "#014FA1",
+    width: 8,
   },
   {
     value: "line_6",
+    position: [-0, -60],
+    height: 8,
+    color: "#5BBAD3",
+    width: 8,
   },
   {
     value: "line_7",
+    position: [-0, -72],
+    height: 8,
+    color: "#B08569",
+    width: 8,
   },
   {
     value: "line_8",
+    position: [-0, -84],
+    height: 8,
+    color: "#999",
+    width: 8,
   },
 ];
-
 export const INIT_LINE_STATE = {
   name: "未命名",
   mark: "",
@@ -113,4 +144,3 @@ export const SCALEPLATE_LIST = [
     v: "metric",
   },
 ];
-

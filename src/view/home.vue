@@ -10,13 +10,14 @@ import Map from "../components/map/index.vue";
 </script>
 
 <template>
-    <div class="main">
-      <ThemeSwitch />
-      <Map />
-    </div>
+  <div class="main">
+    <!-- <ThemeSwitch /> -->
+    <Map />
+  </div>
 </template>
 <style scoped>
 .main {
-  height: calc(100% - 60px);
+  height: 100%;
+  width: 100%;
 }
 </style>

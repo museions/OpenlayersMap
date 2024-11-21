@@ -11,22 +11,18 @@ import { TYPES } from "../../const/const.map";
 
 const cardstore = useCardStore();
 
-const { setShowUuid, getItem, removeItem } = cardstore;
+const { setShowUuid, getItem, removeItem, setItem } = cardstore;
 
 const { showUuid } = storeToRefs(cardstore);
 
 const MapStore = useMapStore();
 
-let form = ref({ name: "", type: "" });
-
-const state = ref("");
+let form = ref({ name: "", type: "", mark: "" });
 
 cardstore.$onAction(({ name, after }) => {
   if (name == "addData") {
     after((p) => {
-      const { operate } = p;
       form.value = { ...form.value, ...p, ...p.formData };
-      state.value = operate;
     });
   }
 });
@@ -39,14 +35,28 @@ const handleDelete = () => {
   if (targetOverlay) {
     MapStore.map.removeOverlay(targetOverlay);
   }
-  if (targetMarker) {
-    cardstore.drawTool.vectorLayer.getSource().removeFeature(targetMarker);
-  }
-  if (feature) {
-    cardstore.drawTool.vectorLayer.getSource().removeFeature(feature);
+  const { vectorLayer } = cardstore.drawTool;
+  if (vectorLayer) {
+    if (targetMarker) {
+      vectorLayer.getSource().removeFeature(targetMarker);
+    }
+    if (feature) {
+      vectorLayer.getSource().removeFeature(feature);
+    }
   }
   removeItem({ uuid: showUuid.value });
   setShowUuid("");
+};
+
+const changeName = (name) => {
+  let cardName = !name ? "未命名" : name;
+  setItem({ name: cardName, uuid: showUuid });
+  form.value.name = cardName;
+
+  const { overlay } = getItem();
+  if (overlay && overlay.getElement()) {
+    overlay.getElement().innerText = cardName;
+  }
 };
 
 const formComponent = computed(() => {
@@ -94,7 +104,11 @@ const formComponent = computed(() => {
         <div class="editPanel">
           <el-form :model="form" label-width="auto" style="max-width: 600px">
             <el-form-item label="名称:">
-              <el-input v-model="form.name" />
+              <el-input
+                v-model="form.name"
+                maxlength="10"
+                @change="changeName"
+              />
             </el-form-item>
             <el-form-item label="备注:">
               <el-input v-model="form.mark" :rows="2" type="textarea" />

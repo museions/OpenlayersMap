@@ -8,13 +8,14 @@ import Feature from "ol/Feature";
 import { Style, Icon, Circle, Stroke, Fill } from "ol/style";
 import { getSVGForSrcById } from "../../../../util/index.ts";
 import { LAYER_NAMES } from "../../../../baseComponent/OpenlayersMap/layers.ts";
+import VectorLayer from "ol/layer/Vector";
 
 export class BaseTool {
   map: Map;
   callback: Function = () => {};
   mapEl = document.querySelector(".ol-viewport");
   uuid: string = "";
-  vectorLayer!: BaseLayer | undefined;
+  vectorLayer: VectorLayer | BaseLayer | undefined;
   type: Type;
   helpTooltip!: Overlay; //提示文本
   setHelpTooltip: Function = () => void 0;
@@ -111,7 +112,7 @@ export class BaseTool {
   }) {
     var element = document.createElement("div");
     element.className = className || `popOverlay`;
-    element.id = `overlay_${uuid}_${content}`;
+    element.id = `overlay_${uuid}`;
     element.innerHTML = content;
     return element;
   }

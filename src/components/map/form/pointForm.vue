@@ -1,106 +1,98 @@
-<script setup>
-import { reactive, watch, onMounted, computed, toRaw } from "vue";
+<script setup lang="ts">
+import { reactive } from "vue";
 import { storeToRefs } from "pinia";
 import { Style, Icon } from "ol/style";
-import Overlay from "ol/Overlay";
-import { useCardStore, useMapStore } from "../../../store/index.ts";
-import locImgSrc from "../../../assets/loc.png";
+import { useCardStore } from "../../../store/index.ts";
 import { getSVGForSrcById } from "../../../util/index";
+import { POINT_IMG_OPTIONS } from "../../../const/const.form.ts";
+import { StyleLike } from "ol/style/Style";
 
 const cardstore = useCardStore();
-const { setItem, getItem: getMarkerData } = cardstore;
-const { showUuid, list } = storeToRefs(cardstore);
+const { getItem: getMarkerData } = cardstore;
+const { showUuid } = storeToRefs(cardstore);
 
-const mapStore = useMapStore();
-const { map } = storeToRefs(mapStore);
+const DEFAULT_SYMBOL_ID = "icon-symbol-one";
 
-const mapInstance = toRaw(map.value);
 const form = reactive({
   uuid: showUuid.value,
   color: "red",
   size: 25,
-  symbolId: null,
+  symbolId: DEFAULT_SYMBOL_ID,
   showName: true,
   name: "point",
 });
 
-const changeColor = (color) => {
-  document.querySelector(`#marker_${form.uuid}`).style.borderColor = color;
+const changeColor = (color: string) => {
+  form.color = color;
+
+  const overlayTip = document.querySelector(`#overlay_${form.uuid}`);
+  if (overlayTip) {
+    overlayTip.style.borderColor = color;
+  }
   changeMarkerIcon({ color });
 };
 
-const changeSize = (size) => {
-  console.log("🚀 ~ changeSize ~ size:", size);
+const changeSize = (size: number) => {
   let { marker: targetMarker, overlay: targetOverlay } = getMarkerData();
   let rate = size / 25;
   if (targetMarker) {
-    var markerStyle = targetMarker.getStyle();
-    var img = markerStyle.getImage();
+    var markerStyle: StyleLike | undefined = targetMarker.getStyle();
+    var img = markerStyle?.getImage();
     img.setScale(rate);
     targetMarker.setStyle(markerStyle);
   }
 
   if (targetOverlay) {
     targetOverlay.setOffset([15 * rate, -30 * rate]);
-
-    // setItem({ overlay });
   }
 };
 
-const changeMarkerIcon = ({ symbolId, color }) => {
+const changeMarkerIcon = ({
+  symbolId,
+  color,
+}: {
+  symbolId?: string;
+  color?: string;
+}) => {
   symbolId = symbolId || form.symbolId;
   color = color || form.color;
   let { marker: targetMarker } = getMarkerData();
   if (targetMarker) {
-    const originStyle = targetMarker.getStyle();
+    const originStyle: StyleLike | undefined = targetMarker.getStyle();
     var markerStyle = new Style({
       image: new Icon({
         anchor: [0.5, 1],
         src: getSVGForSrcById({ symbolId, color }),
-        scale: originStyle.getImage().getScale(),
+        scale: originStyle?.getImage().getScale(),
       }),
     });
     targetMarker.setStyle(markerStyle);
   }
 };
 
-const removeClass = () => {
-  let aLi = document.querySelectorAll("span");
-  aLi.forEach((i) => {
-    i.classList.remove("active");
-  });
-};
-
-onMounted(() => {
-  const aI = document.querySelectorAll(".icon_container i");
-  aI.forEach((oI) => {
-    oI.addEventListener("click", () => {
-      removeClass();
-      oI.parentNode.classList.add("active");
-      const symbolId = oI.className;
-      form.symbolId = symbolId;
-      changeMarkerIcon({ symbolId });
-    });
-  });
-});
-
-const handleClickDefault = (e) => {
-  removeClass();
-  document.querySelector("#defaultIcon").classList.add("active");
-  const symbolId = "icon-symbol-one";
-  form.symbolId = symbolId;
+const handleClickDefault = () => {
+  const symbolId = DEFAULT_SYMBOL_ID;
+  form.symbolId = DEFAULT_SYMBOL_ID;
   changeMarkerIcon({ symbolId });
 };
 
-const changeShowName = (visible) => {
+const changeShowName = (visible: boolean) => {
   let { overlay: targetOverlay } = getMarkerData();
   if (targetOverlay) {
-    if (visible) {
-      mapInstance.addOverlay(targetOverlay);
-    } else {
-      mapInstance.removeOverlay(targetOverlay);
+    const ele = targetOverlay.getElement();
+    if (ele) {
+      ele.style.display = visible ? "block" : "none";
     }
   }
+};
+
+const handleClickImgOptions = ({
+  className: symbolId,
+}: {
+  className: string;
+}) => {
+  form.symbolId = symbolId;
+  changeMarkerIcon({ symbolId });
 };
 </script>
 
@@ -113,7 +105,11 @@ const changeShowName = (visible) => {
   >
     <el-form-item label="符号集合:">
       <div class="icon_container">
-        <span @click="handleClickDefault" id="defaultIcon" class="active">
+        <span
+          @click="handleClickDefault"
+          id="defaultIcon"
+          :class="{ active: form.symbolId == DEFAULT_SYMBOL_ID }"
+        >
           <svg
             width="26px"
             height="26px"
@@ -126,23 +122,20 @@ const changeShowName = (visible) => {
           </svg>
           <span>默认</span>
         </span>
-        <span><i class="icon-restaurant"></i><span>餐饮</span></span>
-        <span><i class="icon-accommodation"></i><span>住宿</span></span>
-        <span><i class="icon-shopping"></i><span>购物</span></span>
-        <span><i class="icon-automobile"></i><span>4s店</span></span>
-        <span><i class="icon-finance"></i><span>金融</span></span>
-        <span><i class="icon-culture"></i><span>教育</span></span>
-        <span><i class="icon-hygiene"></i><span>卫生</span></span>
-        <span><i class="icon-sports"></i><span>休闲</span></span>
-        <span><i class="icon-office"></i><span>机关</span></span>
-        <span><i class="icon-storage"></i><span>商业</span></span>
-        <span><i class="icon-life"></i><span>服务</span></span>
-        <span><i class="icon-company"></i><span>公司</span></span>
-        <span><i class="icon-traffic"></i><span>交通</span></span>
-        <span><i class="icon-scientific-research"></i><span>科研</span></span>
-        <span><i class="icon-agriculture"></i><span>农业</span></span>
-        <span><i class="icon-place-name"></i><span>地名</span></span>
-        <span><i class="icon-facilities"></i><span>设施</span></span>
+        <span
+          v-for="{ className, label, position } in POINT_IMG_OPTIONS"
+          :class="{ active: form.symbolId == className }"
+          @click="() => handleClickImgOptions({ className })"
+        >
+          <i
+            :class="className"
+            :style="{
+              backgroundPositionX: position[0] + 'px',
+              backgroundPositionY: position[1] + 'px',
+            }"
+          ></i>
+          <span>{{ label }}</span>
+        </span>
       </div>
     </el-form-item>
     <el-form-item label="符号颜色:">
@@ -209,73 +202,5 @@ const changeShowName = (visible) => {
 .icon_container span span {
   font-size: 12px;
   margin-top: 5px;
-}
-
-i.icon-restaurant {
-  background-position: -56px -28px;
-}
-
-i.icon-accommodation {
-  background-position: -1px -1px;
-}
-
-i.icon-shopping {
-  background-position: -222px -1px;
-}
-
-i.icon-automobile {
-  background-position: -194px -28px;
-}
-
-i.icon-finance {
-  background-position: -166px -1px;
-}
-
-i.icon-culture {
-  background-position: -111px -1px;
-}
-
-i.icon-hygiene {
-  background-position: -29px -1px;
-}
-
-i.icon-sports {
-  background-position: -56px -1px;
-}
-
-i.icon-office {
-  background-position: -194px -1px;
-}
-
-i.icon-storage {
-  background-position: -84px -28px;
-}
-
-i.icon-life {
-  background-position: -84px -1px;
-}
-
-i.icon-company {
-  background-position: -1px -28px;
-}
-
-i.icon-traffic {
-  background-position: -139px -1px;
-}
-
-i.icon-scientific-research {
-  background-position: -29px -28px;
-}
-
-i.icon-agriculture {
-  background-position: -111px -28px;
-}
-
-i.icon-place-name {
-  background-position: -166px -28px;
-}
-
-i.icon-facilities {
-  background-position: -139px -28px;
 }
 </style>

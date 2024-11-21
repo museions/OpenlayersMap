@@ -3,6 +3,7 @@ import { Style, Stroke, Icon } from "ol/style";
 import { Geometry, Geometry, Point } from "ol/geom";
 import { Coordinate } from "ol/coordinate";
 import { Tile } from "ol";
+import { StyleLike } from "ol/style/Style";
 
 export const formatDistance = (dis: number) => {
   if (dis > 100) {
@@ -103,8 +104,15 @@ export const getStyleFunction = ({
   width,
   imgsrc,
   scale,
-  wrapperRotation,
-}) => {
+  wrapperRotation = (p) => p,
+}: {
+  steps?: number;
+  color?: string;
+  width?: number;
+  imgsrc?: string;
+  scale?: number;
+  wrapperRotation?: (p: number) => number;
+}): StyleLike => {
   steps = steps || 40;
   scale = scale || 0.5;
   return (feature: { getGeometry: () => any }, resolution: number) => {

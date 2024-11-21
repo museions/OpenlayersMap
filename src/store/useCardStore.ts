@@ -18,6 +18,7 @@ import {
   BaseTool,
 } from "../components/map/MapTools/index.ts";
 import { Type } from "ol/geom/Geometry";
+import { Feature, Overlay } from "ol";
 
 type ListItem = {
   uuid: string;
@@ -33,6 +34,7 @@ interface CardStoreDataStruct {
 }
 
 export const defaultState = {
+  name: "未命名",
   type: "",
   uuid: "",
   formData: {},
@@ -120,7 +122,7 @@ export const useCardStore = defineStore("cardStore", {
         }
       });
     },
-    getItem(): Object {
+    getItem(): { marker?: Feature; overlay?: Overlay; feature?: Feature } {
       return this.list.filter(
         (i: { uuid: string }) => i.uuid == this.showUuid
       )[0];

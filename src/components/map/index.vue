@@ -9,7 +9,6 @@ import brp from "./brp.vue";
 import topicLayerCard from "./component/topicLayerCard.vue";
 import dragPanel from "./dragPanel/index.vue";
 import routePlan from "./component/routePlan.vue";
-import "./style.css";
 import {
   useMapStore,
   usePanelStore,
@@ -33,19 +32,21 @@ const { type } = storeToRefs(PanelStore);
 
 const { map } = storeToRefs(MapStore);
 
-const getMap = (map) => {
+const getMap = (map: Object) => {
   MapStore.setMap(map);
 };
 
 commonStore.$onAction(({ name, after }) => {
   if (name == "setThemeColor") {
     after(({ color }) => {
-      console.log(map.value);
       const mapInstance = toRaw(map.value);
       const baseLayer = mapInstance
         .getLayers()
         .getArray()
-        .find((i) => i.getClassName() == LAYER_NAMES.AMAP_LAYER);
+        .find(
+          (i: { getClassName: () => string }) =>
+            i.getClassName() == LAYER_NAMES.AMAP_LAYER
+        );
 
       if (baseLayer) {
         let source = AMAP_LAYER().getSource();
