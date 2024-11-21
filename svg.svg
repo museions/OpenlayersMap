@@ -1,16 +1,4 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" href="/fav.jpg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="node_modules/ol/ol.css">
-  <title>Map-Openlayers</title>
-</head>
-
-<body>
-  <svg aria-hidden="true" id="svgBase" style="position: absolute; width: 0px; height: 0px; overflow: hidden;">
+<svg aria-hidden="true" id="svgBase" style="position: absolute; width: 0px; height: 0px; overflow: hidden;">
     <symbol id="icon-operate" viewBox="0 0 1024 1024">
       <path
         d="M996.864 52.224L786.944 4.096c-7.68-1.536-15.36-1.024-22.528 2.048l-245.76 112.64-226.304-94.72a34.304 34.304 0 0 0-26.624 0l-243.2 94.72C9.216 123.904 0 137.216 0 151.552v668.16c0 11.776 5.632 22.528 15.36 29.184 9.728 6.656 22.016 8.192 32.768 3.584l230.4-89.6 227.328 94.72c4.096 1.536 8.704 2.56 13.312 2.56 5.12 0 10.24-1.024 14.848-3.072l18.432-8.192-31.232-62.976-2.56 1.024-226.304-94.208c-4.096-2.048-8.704-2.56-13.312-2.56-4.096 0-8.704 1.024-12.8 2.56L70.144 768V175.616L278.016 94.72l227.328 94.72c9.216 3.584 19.456 3.584 28.16-0.512L782.336 74.752l171.008 39.424v595.968l-33.28-7.68-16.896 33.792c-2.56 6.144-5.632 11.776-8.704 17.408l-0.512 1.024-6.144 12.288 92.672 21.504c10.24 2.56 21.504 0 29.696-6.656s13.312-16.896 13.312-27.648V86.016c0.512-15.872-10.752-30.208-26.624-33.792z"
@@ -1174,8 +1162,3 @@
       </path>
     </symbol>
   </svg>
-  <div id="app"></div>
-  <script type="module" src="/src/main.ts"></script>
-</body>
-
-</html>
