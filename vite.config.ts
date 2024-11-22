@@ -1,14 +1,15 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import qiankun from "vite-plugin-qiankun";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [vue(), qiankun("vue-openlayers-app", { useDevMode: true })],
   base: "./",
-  // resolve:{
-  //   extensions:['.ts','.vue','.tsx']
-  // },
-  build:{
-    outDir:'../map_pages'
-  }
-})
+  build: {
+    outDir: "../map_pages",
+  },
+  server: {
+    port: 5158,
+  },
+});
