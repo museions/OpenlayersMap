@@ -12,8 +12,8 @@ import waterMarkerControl from "./waterMarkerControl.vue";
 .drag-panel {
   position: absolute;
   background: #ffffff;
-  top: 65px;
-  left: 150px;
+  top: 5px;
+  right: 80px;
   color: #000000;
   padding: 2px 6px;
   border-radius: 2px;
