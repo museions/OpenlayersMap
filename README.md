@@ -9,6 +9,10 @@
 - `Typescript`
 - `Pinia`
 
+### 平台预览
+
+<img src="./UI.png" />
+
 ### 平台功能介绍
 
 🎛️ **地图控件**
