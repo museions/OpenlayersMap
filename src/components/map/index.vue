@@ -23,6 +23,7 @@ import {
 } from "../../baseComponent/OpenlayersMap/layers.ts";
 import { THEME_COLOR } from "../../const/const.common.ts";
 import { tileLoadFunction } from "../../util/mapTool.ts";
+import keyboardNote from "../../baseComponent/keyboardNote.vue";
 
 const MapStore = useMapStore();
 const PanelStore = usePanelStore();
@@ -89,5 +90,8 @@ commonStore.$onAction(({ name, after }) => {
 
   <!-- 大卡片 -->
   <bigPanel />
+
+  <!--鼠标按键交互卡片-->
+  <keyboardNote />
 </template>
 <style scoped></style>
