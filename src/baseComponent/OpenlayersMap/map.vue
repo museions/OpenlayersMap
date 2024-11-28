@@ -12,15 +12,16 @@ import {
   ZoomToExtent,
   OverviewMap,
 } from "ol/control";
+import {
+  KeyboardPan,
+  defaults as interactionDefault,
+  KeyboardZoom,
+} from "ol/interaction";
 import PrintDialog from "ol-ext/control/PrintDialog";
 import { jsPDF } from "jspdf";
 import { saveAs } from "file-saver";
 import { v4 as uuidv4 } from "uuid";
-import {
-  VECTOR_LAYER,
-  AMAP_LAYER,
-  GOOGLE_LAYER,
-} from "./layers.ts";
+import { VECTOR_LAYER, AMAP_LAYER, GOOGLE_LAYER } from "./layers.ts";
 import { EXTENT, ZOOM, CENTER } from "./const.map.ts";
 
 const emit = defineEmits(["setMap"]);
@@ -36,6 +37,10 @@ const initMap = () => {
     ],
   });
 
+  const a = new KeyboardPan({
+    pixelDelta: 100,
+    duration: 200,
+  });
   const map = new Map({
     layers: [AMAP_LAYER(), GOOGLE_LAYER, VECTOR_LAYER()],
     target: "map",
@@ -45,8 +50,21 @@ const initMap = () => {
       minZoom: ZOOM.MIN,
       maxZoom: ZOOM.MAX,
     }),
+    /* interactions: interactionDefault().extend([a, new KeyboardZoom()]),*/
   });
 
+  document.addEventListener("keydown", function (event) {
+    console.log("Key pressed: ", event.key);
+  });
+  console.log("🚀 ~ initMap ~ map:", map, a, a.getActive());
+  /*  
+  map.addInteraction(
+    new KeyboardPan({
+      pixelDelta: 100,
+      duration: 200,
+    })
+  );
+*/
   map.addControl(overviewMapControl);
 
   map.addControl(new ZoomSlider());
@@ -121,7 +139,7 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div id="map" v-loading="loading"></div>
+  <div id="map" v-loading="loading" tabindex="2"></div>
 </template>
 <style scoped>
 #map {
