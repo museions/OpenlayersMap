@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted, nextTick } from "vue";
 import { storeToRefs } from "pinia";
 import { easeOut } from "ol/easing";
 import { useMapStore } from "../../store";
@@ -38,6 +38,23 @@ const handleRotate = (type: string | undefined) => {
     easing: easeOut, //旋转速度
   });
 };
+
+onMounted(() => {
+  nextTick(() => {
+    if (MapInstance.value && Object.keys(MapInstance.value).length) {
+      MapInstance.value.on("postrender", (mapEvent: { frameState: any }) => {
+        const frameState = mapEvent.frameState;
+        if (!frameState) {
+          return;
+        }
+        const rotation = (frameState.viewState.rotation * 180) / Math.PI;
+        if (rotate.value != rotation) {
+          rotate.value = rotation;
+        }
+      });
+    }
+  });
+});
 </script>
 <template>
   <div class="compass" style="transform: rotate(0deg)">
