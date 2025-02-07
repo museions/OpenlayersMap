@@ -4,7 +4,10 @@ import qiankun from "vite-plugin-qiankun";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), qiankun("vue-openlayers-app", { useDevMode: true })],
+  plugins: [
+    vue(),
+    qiankun("vue-openlayers-app", { useDevMode: true }),
+  ],
   base: "./",
   build: {
     outDir: "../map_pages",
