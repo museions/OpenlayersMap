@@ -133,7 +133,7 @@ const flyTo = (location: Coordinate, done = () => {}) => {
   );
   view.animate(
     {
-      zoom: zoom - 1,
+      zoom: zoom ? zoom - 1 : undefined,
       duration: duration / 2,
     },
     {

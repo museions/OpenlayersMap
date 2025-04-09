@@ -5,6 +5,7 @@ import { PANEL_MAP_TYPE, PANEL_MAP_LIST } from "../../../const";
 import vectorLayerHight from "./Panels/vectorLayerHight.vue";
 import animationMap from "./Panels/animationMap.vue";
 import analyseMap from "./Panels/analyseMap.vue";
+import trackPlayMap from "./Panels/trackPlayMap.vue";
 import { computed } from "vue";
 
 const panelStore = usePanelStore();
@@ -27,6 +28,8 @@ const MapComp = computed(() => {
       return animationMap;
     case PANEL_MAP_LIST[2].type:
       return analyseMap;
+    case PANEL_MAP_LIST[3].type:
+      return trackPlayMap;
   }
 });
 </script>

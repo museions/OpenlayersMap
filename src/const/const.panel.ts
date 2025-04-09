@@ -7,12 +7,14 @@ export const PANEL_MAP_TYPE = {
   NULL: "NULL",
   VECTOR_LAYER: "VECTOR_LAYER",
   ANIMATION_LAYER: "ANIMATION_LAYER",
+  TRACK_PLAY: "TRACK_PLAY",
 };
 
 export const PANEL_MAP_LIST = [
   { type: "VECTOR_LAYER", txt: "高亮矢量图" },
   { type: "ANIMATION_LAYER", txt: "地图动画" },
   { type: "SPATIAL_ANALYSIS ", txt: "空间分析" },
+  { type: "TRACK_PLAY ", txt: "轨迹播放" },
 ];
 
 export const SPATIAL_ANALYSIS_TYPES = [

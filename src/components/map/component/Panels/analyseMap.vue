@@ -80,31 +80,42 @@ const drawCircle = () => {
   });
   drawTool.init();
 };
-
+const getPolygonCollection = () => {
+  const polygonCollection = turf.featureCollection(
+    completedFeatures.value.map((feature) => {
+      const coordinates = (feature.getGeometry() as Polygon)?.getCoordinates();
+      return turf.polygon(coordinates);
+    })
+  );
+  return polygonCollection;
+};
 const getPolygons = () => {
   const p1 = turf.polygon(
-    completedFeatures.value[0]
-      .getGeometry()
+    (completedFeatures.value[0]
+      .getGeometry() as Polygon)
       ?.getCoordinates()
   );
 
   const p2 = turf.polygon(
-    completedFeatures.value[1]
-      .getGeometry()
+    (completedFeatures.value[1]
+      .getGeometry() as Polygon)
       ?.getCoordinates()
   );
 
   return { p1, p2 };
 };
 
+const colors = [
+'#82d89f', '#00e6e7', '#f6970a', '#f3352b', '#bd56ec', '#ff523f', '#0281fe', '#f19cdf'
+]
 const afterStyle = new Style({
   stroke: new Stroke({
-    color: "#438ed8",
-    width: 3,
+    color: colors[2],
+    width: 2,
   }),
-  fill: new Fill({
-    color: "rgba(255, 255, 255, 0.8)",
-  }),
+  // fill: new Fill({
+  //   color: "rgba(255, 255, 255, 0.8)",
+  // }),
 });
 
 let feature: Feature;
@@ -115,18 +126,19 @@ const resetFeature = () => {
   }
 };
 const handleUnionClick = () => {
-  const { p1, p2 } = getPolygons();
-  const union = turf.union(turf.featureCollection([p1, p2]));
+  const polygonCollection = getPolygonCollection()
+  const union = turf.union(polygonCollection);
   if (union) {
     resetFeature();
     feature = new Feature({
       geometry: new Polygon(union?.geometry?.coordinates),
       zIndex: 9,
     });
-
     feature.setStyle(afterStyle);
-
+    const features = completedFeatures.value;
+    // vectoryLayer.getSource()?.clear()
     vectoryLayer.getSource()?.addFeature(feature);
+    vectoryLayer.getSource()?.removeFeatures(<Feature []>features);
   }
 };
 
@@ -162,6 +174,8 @@ const handleDifferenceClick = () => {
   }
 };
 const handleClick = (item: { type: string }) => {
+  console.log('item', item);
+  
   const { type } = item;
   switch (type) {
     case list[0].type:

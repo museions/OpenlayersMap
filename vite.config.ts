@@ -12,6 +12,11 @@ export default defineConfig({
   build: {
     outDir: "../map_pages",
   },
+  resolve: {
+    alias: {
+      '@': './src',
+    }
+  },
   server: {
     port: 5158,
   },
